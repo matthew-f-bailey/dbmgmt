@@ -1,0 +1,11 @@
+asgiref==3.6.0
+cloudpickle==2.2.1
+Django==4.1.7
+django-extensions==3.2.1
+graphviz==0.20.1
+importlib-metadata==6.1.0
+pydot==1.4.2
+pydotplus==2.0.2
+pyparsing==3.0.9
+sqlparse==0.4.3
+zipp==3.15.0
