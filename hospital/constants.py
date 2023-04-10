@@ -25,5 +25,6 @@ ANATOMICAL_LOCATIONS = (
 
 # Medical
 BLOOD_TYPE = (
-    ("OP", "O Positive")
+    ("OP", "O Positive"),
+    ("ON", "O Negative")
 )
