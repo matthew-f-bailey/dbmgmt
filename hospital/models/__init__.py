@@ -1,1 +1,2 @@
-#from .places import *
+from .places import *
+from .people import Patient
