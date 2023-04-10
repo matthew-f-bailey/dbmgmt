@@ -1,15 +1,26 @@
-from django.core.validators import MaxValueValidator, MinValueValidator
-from django.db import models
+from datetime import datetime
 import uuid
 
-from hospital.models.illnesses import Illness, Allergy, Medication
-from hospital.models.actions import Perscription
+from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db import models
+
 from hospital import constants
 
 
 def get_chief_of_staff():
     """ Get the chief of staff, special physisican """
-    return Physician.objects.get_or_create()
+    cof = Physician.objects.get_or_create(
+        first_name="Chief",
+        last_name="Staffton",
+        dob=datetime(1960, 1, 1),
+        gender="M",
+        address="10 Chiefton Way",
+        phone="5557891234",
+        specialty=constants.SPECIALTIES[0][0],
+        salary=300_000
+    )
+    # Returns bool of "if created" in cof[1]
+    return cof[0]
 
 
 class Person(models.Model):
@@ -22,9 +33,9 @@ class Person(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     dob = models.DateField()
-    gender = models.Choices(choices=constants.GENDER)
-    address = models.CharField()
-    phone = models.CharField()
+    gender = models.CharField(choices=constants.GENDER, max_length=1)
+    address = models.CharField(max_length=100)
+    phone = models.CharField(max_length=10)
 
 
 class Salaried(models.Model):
@@ -36,8 +47,8 @@ class Salaried(models.Model):
 
 class Contract(models.Model):
     """ Contract Emps """
-    length = models.PositiveIntegerField()
-    type = models.CharField()
+    contract_length = models.PositiveIntegerField()
+    contract_type = models.CharField(max_length=50)
 
 # ================ #
 # ==== PEOPLE ==== #
@@ -47,33 +58,38 @@ class Surgeon(Person, Contract):
 
 
 class Nurse(Person, Salaried):
-    grade = models.Choices(choices=constants.NURSE_GRADES)
+    """
+    Cannot be assigned more than 1 surg type
+    All types of surgeries have at least 2 nurses
+    """
+    surgery_type = models.CharField(max_length=50, choices=constants.SPECIALTIES)
+    grade = models.CharField(max_length=10, choices=constants.NURSE_GRADES)
     years_of_experience = models.PositiveIntegerField()
 
 
 class Physician(Person, Salaried):
-    specialty = models.Choices(choices=constants.SPECIALTIES)
+    specialty = models.CharField(max_length=50, choices=constants.SPECIALTIES)
 
 
 
 class Patient(Person):
 
     # Patients have 1 physician, if leaves, give to chief of staff
-    physician = models.ForeignKey(
+    pcp = models.ForeignKey(
         Physician,
         on_delete=models.SET(get_chief_of_staff)
     )
-    illnesses = models.ManyToManyField(Illness)
-    allergies = models.ManyToManyField(Allergy)
+    illnesses = models.ManyToManyField("Illness")
+    allergies = models.ManyToManyField("Allergy")
 
     # Deleting a perscription, deletes rel
-    perscriptions = models.ForeignKey(
-        Perscription,
+    perscribed = models.ForeignKey(
+        "Medication",
         on_delete=models.CASCADE
     )
 
     # Medical Data
-    blood_type = models.Choices(choices=constants.BLOOD_TYPE)
+    blood_type = models.CharField(max_length=10, choices=constants.BLOOD_TYPE)
     blood_sugar = models.FloatField()
     cholesterol_hdl = models.FloatField()
     cholesterol_ldl = models.FloatField()

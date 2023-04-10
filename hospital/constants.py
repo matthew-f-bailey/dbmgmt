@@ -1,29 +1,40 @@
 GENDER = (('m', 'Male'), ('f', 'Female'))
 
 SPECIALTIES = (
-    ("Podiatry", "Podiatry"),
-    ("Optometry", "Optometry"),
+    ("podiatry", "Podiatry"),
+    ("optometry", "Optometry"),
 )
 
 NURSE_GRADES = (
-    ("A", "A"),
-    ("B", "B"),
-    ("C", "C"),
+    ("a", "A"),
+    ("b", "B"),
+    ("c", "C"),
 )
 
 # SURGICAL
 SURGERY_CODES = (
-    ("NEU", "Neurosurgery")
+    ("neu", "Neurosurgery"),
+    ("pod", "Podiatric Surgery"),
 )
 SURGERY_CATEGORIES = (
-    ("H", "Requires Hospitalization"),
-    ("O", "Outpatient"),
+    ("h", "Requires Hospitalization"),
+    ("o", "Outpatient"),
 )
 ANATOMICAL_LOCATIONS = (
-    ("Foot", "Foot")
+    ("foot", "Foot"),
+    ("head", "Head")
+)
+SURGICAL_SKILLS = (
+    ("transplant", "Organ Transplants"),
+    ("wound", "Wound Care"),
+    ("brain", "Brain"),
+    ("head_trauma", "Head Trauma"),
+    ("clipping", "Toenail Clipping"),
+    ("bunion", "Bunion Removal"),
 )
 
 # Medical
 BLOOD_TYPE = (
-    ("OP", "O Positive")
+    ("OP", "O Positive"),
+    ("ON", "O Negative"),
 )
