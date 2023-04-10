@@ -4,6 +4,7 @@ import uuid
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
+from hospital.models.illnesses import Illness, Allergy, Medication
 from hospital import constants
 
 
@@ -33,10 +34,10 @@ class Person(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     dob = models.DateField()
-    gender = models.CharField(choices=constants.GENDER, max_length=1)
-    address = models.CharField(max_length=100)
-    phone = models.CharField(max_length=10)
-
+    gender = models.CharField(max_length=2, choices= constants.GENDER)
+    address = models.CharField(max_length=254)
+    phone = models.CharField(max_length=30)
+    ssn = models.PositiveIntegerField()
 
 class Salaried(models.Model):
     """ Salaried Emps """
@@ -54,7 +55,7 @@ class Contract(models.Model):
 # ==== PEOPLE ==== #
 # ================ #
 class Surgeon(Person, Contract):
-    pass
+    specialty = models.CharField(max_length=254, choices=constants.SPECIALTIES)
 
 
 class Nurse(Person, Salaried):
@@ -77,19 +78,21 @@ class Patient(Person):
     # Patients have 1 physician, if leaves, give to chief of staff
     pcp = models.ForeignKey(
         Physician,
-        on_delete=models.SET(get_chief_of_staff)
+        on_delete=models.SET(get_chief_of_staff),
+        blank=True, null=True
     )
-    illnesses = models.ManyToManyField("Illness")
-    allergies = models.ManyToManyField("Allergy")
+    illnesses = models.ManyToManyField(Illness, blank=True, null=True)
+    allergies = models.ManyToManyField(Allergy, blank=True, null=True)
 
-    # Deleting a perscription, deletes rel
-    perscribed = models.ForeignKey(
-        "Medication",
-        on_delete=models.CASCADE
-    )
+    # Deleting a perscription, deletes rel/
+    # a patient may have multiple medications. We need to have a seperate table for prescribtions
+    #perscriptions = models.ForeignKey(
+    #   Perscription,
+    #   on_delete=models.CASCADE
+    #)
 
     # Medical Data
-    blood_type = models.CharField(max_length=10, choices=constants.BLOOD_TYPE)
+    blood_type = models.CharField(max_length=30, choices=constants.BLOOD_TYPE)
     blood_sugar = models.FloatField()
     cholesterol_hdl = models.FloatField()
     cholesterol_ldl = models.FloatField()
