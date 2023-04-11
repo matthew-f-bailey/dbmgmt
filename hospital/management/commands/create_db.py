@@ -5,8 +5,14 @@ from django.core.management import call_command
 from faker import Faker
 
 from hospital.models.places import Clinic
-from hospital.models.people import Patient, Surgeon, Physician, get_chief_of_staff
-from hospital.models.skill_types import Skills, SurgeryType
+from hospital.models.people import (
+    Nurse,
+    Patient,
+    Physician,
+    Surgeon,
+    get_chief_of_staff,
+)
+from hospital.models.skill_types import Skills, SurgeonSkills, SurgeryType
 from hospital import constants
 
 
@@ -30,8 +36,12 @@ class Command(BaseCommand):
         chief = get_chief_of_staff()
         print(f"Created our Chief of Staff '{chief.first_name} {chief.last_name}'")
 
+        # Creating entire skills table
+        for skill, readable in constants.SURGICAL_SKILLS:
+            Skills(name=skill).save()
+
         # Create some surgeons
-        surgeon1 = Surgeon(
+        neurosurgeon = Surgeon(
             first_name="Joan",
             last_name="Neuro",
             dob=datetime(1970, 2, 2),
@@ -42,8 +52,25 @@ class Command(BaseCommand):
             contract_type="Per Surgery",
             ssn=fake.ssn()
         )
-        surgeon1.save()
-        # Skills -> surgeon1.skills_set
-        for skill in ["brain", "head_trauma"]:
-            Skills(surgeon=surgeon1, skill=skill).save()
-        print("Created Neurosurgeon")
+        neurosurgeon.save()
+
+        # Create a Neruosurgery type and give surgeon exact skills needed
+        neuro_skills = ["brain", "head_trauma"]
+        neurosurgury = SurgeryType(name="Neurosurgery")
+        neurosurgury.save()
+        for skill in neuro_skills:
+            # User will be presented these in view
+            skill_instance = Skills.objects.get(name=skill)
+
+            # Add skill to surgeon
+            SurgeonSkills(surgeon=neurosurgeon, skill=skill_instance).save()
+
+            # Add to this skill type of neurosurgery
+            neurosurgury.requirements.add(skill_instance)
+            neurosurgury.save()
+
+        # Should be good here
+        if neurosurgeon.can_perform(neurosurgury):
+            print("Created Neurosurgeon that can perform Neurosurgery")
+        else:
+            raise RuntimeError("Hmm.. Check into can_perform method..")

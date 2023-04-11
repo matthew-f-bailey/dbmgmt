@@ -58,6 +58,14 @@ class Contract(models.Model):
 class Surgeon(Person, Contract):
     specialty = models.CharField(max_length=254, choices=constants.SPECIALTIES)
 
+    def can_perform(self, type):
+        """
+        type [SurgeryType]
+        Given a SurgeryType, checks if this surgeon can perform the surgery
+        """
+        skills = {s.skill.name for s in self.surgeonskills_set.all()}
+        needed = {s.name for s in type.requirements.all()}
+        return needed.issubset(skills)
 
 class Nurse(Person, Salaried):
     """
