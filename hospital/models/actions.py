@@ -1,7 +1,6 @@
 from django.db import models
 
 from hospital import constants
-from hospital.models.skill_types import SurgeryType
 
 
 class Surgery(models.Model):
@@ -10,12 +9,12 @@ class Surgery(models.Model):
     """
     date = models.CharField(max_length=30)
     surgeon = models.ForeignKey(
-        "hospital.Surgeon",
+        "Surgeon",
         null=True,
         on_delete=models.SET_NULL
     )
     nurse = models.ForeignKey(
-        "hospital.Nurse",
+        "Nurse",
         null=True,
         on_delete=models.SET_NULL
     )

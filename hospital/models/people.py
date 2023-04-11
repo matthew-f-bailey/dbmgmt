@@ -40,6 +40,10 @@ class Person(models.Model):
     phone = models.CharField(max_length=30)
     ssn = models.CharField(max_length=11)
 
+class SkilledPerson(Person):
+    """ A person who can have skills assigned to them """
+    ...
+
 class Salaried(models.Model):
     """ Salaried Emps """
     salary = models.PositiveIntegerField(
@@ -55,26 +59,40 @@ class Contract(models.Model):
 # ================ #
 # ==== PEOPLE ==== #
 # ================ #
-class Surgeon(Person, Contract):
+class Surgeon(SkilledPerson, Contract):
     specialty = models.CharField(max_length=254, choices=constants.SPECIALTIES)
 
     def can_perform(self, type):
         """
         type [SurgeryType]
         Given a SurgeryType, checks if this surgeon can perform the surgery
+        NEEDS ALL SKILLS
         """
-        skills = {s.skill.name for s in self.surgeonskills_set.all()}
+        skills = {s.skill.name for s in self.assignedskills_set.all()}
         needed = {s.name for s in type.requirements.all()}
         return needed.issubset(skills)
 
-class Nurse(Person, Salaried):
+class Nurse(SkilledPerson, Salaried):
     """
     Cannot be assigned more than 1 surg type
     All types of surgeries have at least 2 nurses
     """
-    surgery_type = models.CharField(max_length=50, choices=constants.SPECIALTIES)
     grade = models.CharField(max_length=10, choices=constants.NURSE_GRADES)
     years_of_experience = models.PositiveIntegerField()
+
+    def can_perform(self, type):
+        """
+        type [SurgeryType]
+        Given a SurgeryType, checks if this nurse can assist
+        NEEDS ANY 1 SKILL REQUIRED BY TYPE TO ASSIST
+        """
+        skills = {s.skill.name for s in self.assignedskills_set.all()}
+        needed = {s.name for s in type.requirements.all()}
+        for skill in skills:
+            # If any 1 skill nurse has is found, they can perform
+            if skill in needed:
+                return True
+        return False
 
 
 class Physician(Person, Salaried):

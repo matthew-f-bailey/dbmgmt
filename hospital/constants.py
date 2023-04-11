@@ -1,3 +1,10 @@
+"""
+An underscored attr means that we populate the database with these
+for mocking purposes, however these are tables as well, designed to grow.
+New ones can be added to the DB as application need arises with no changes here
+
+All others are set and would require code change here to update
+"""
 GENDER = (('m', 'Male'), ('f', 'Female'))
 
 SPECIALTIES = (
@@ -24,17 +31,25 @@ ANATOMICAL_LOCATIONS = (
     ("foot", "Foot"),
     ("head", "Head")
 )
-SURGICAL_SKILLS = (
-    ("transplant", "Organ Transplants"),
-    ("wound", "Wound Care"),
-    ("brain", "Brain"),
-    ("head_trauma", "Head Trauma"),
-    ("clipping", "Toenail Clipping"),
-    ("bunion", "Bunion Removal"),
+_SURGICAL_SKILLS = (
+    ("transplant", "Organ Transplants"), # general
+    ("wound", "Wound Care"), # general
+    ("brain", "Brain"), # neurosurgery
+    ("head_trauma", "Head Trauma"), # neurosurgery
+    ("cardiac_arrest", "Cardiac Arrest"), # cardiac_surgery
+    ("heart_valve", "Heart Valve Repair"), # cardiac_surgery
+    ("rhinoplasty", "Rhinoplasty"), # plastic_surgery
+    ("facelift", "Facelift"), # plastic_surgery
+)
+_SURGICAL_TYPES = (
+    ("general_surgery", "General Surgery"),
+    ("neurosurgery", "Neurosurgery"),
+    ("cardiac_surgery", "Cardiac Surgery"),
+    ("plastic_surgery", "Plastic Surgery"),
 )
 
 # Medical
 BLOOD_TYPE = (
-    ("OP", "O Positive"),
-    ("ON", "O Negative"),
+    ("op", "O Positive"),
+    ("on", "O Negative"),
 )
