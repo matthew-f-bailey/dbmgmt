@@ -38,3 +38,9 @@ BLOOD_TYPE = (
     ("OP", "O Positive"),
     ("ON", "O Negative"),
 )
+
+MED_INTERACTION = (
+    ("S", "Sever Interaction"),
+    ("M", "Moderate Interaction"),
+    ("L", "Little Interaction"),
+)

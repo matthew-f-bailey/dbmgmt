@@ -1,4 +1,5 @@
 from django.db import models
+from hospital.constants import MED_INTERACTION
 
 # ================= #
 # ==== ILLNESS ==== #
@@ -12,9 +13,13 @@ class Medication(models.Model):
     dosage = models.FloatField(max_length=30)
 
     # Lists of interactions this med may have
-    interactions_severe = models.ManyToManyField("self")
-    interactions_moderate = models.ManyToManyField("self")
-    interactions_little = models.ManyToManyField("self")
+    interaction = models.ManyToManyField("self",through="Interactions" )
+
+    # Interactions intermediate table
+class Interactions(models.Model):
+    med1 = models.ForeignKey(Medication, on_delete = models.CASCADE, related_name="first_med")
+    med2 = models.ForeignKey(Medication, on_delete = models.CASCADE, related_name = "second_med")
+    severity = models.CharField(choices=MED_INTERACTION, max_length=1)
 
 
 class Allergy(models.Model):
