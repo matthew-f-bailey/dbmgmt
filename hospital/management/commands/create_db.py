@@ -2,12 +2,15 @@ from datetime import datetime
 
 from django.core.management.base import BaseCommand
 from django.core.management import call_command
+from faker import Faker
 
 from hospital.models.places import Clinic
 from hospital.models.people import Patient, Surgeon, Physician, get_chief_of_staff
 from hospital.models.skill_types import Skills, SurgeryType
 from hospital import constants
 
+
+fake = Faker()
 
 class Command(BaseCommand):
     help = 'Deletes current and recreates the mock database'
@@ -36,7 +39,8 @@ class Command(BaseCommand):
             address="10 Brain Lane",
             phone="1298763490",
             contract_length=5,
-            contract_type="Per Surgery"
+            contract_type="Per Surgery",
+            ssn=fake.ssn()
         )
         surgeon1.save()
         # Skills -> surgeon1.skills_set

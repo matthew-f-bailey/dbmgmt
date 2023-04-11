@@ -18,7 +18,8 @@ def get_chief_of_staff():
         address="10 Chiefton Way",
         phone="5557891234",
         specialty=constants.SPECIALTIES[0][0],
-        salary=300_000
+        salary=300_000,
+        ssn="123-45-6789"
     )
     # Returns bool of "if created" in cof[1]
     return cof[0]
@@ -37,7 +38,7 @@ class Person(models.Model):
     gender = models.CharField(max_length=2, choices= constants.GENDER)
     address = models.CharField(max_length=254)
     phone = models.CharField(max_length=30)
-    ssn = models.PositiveIntegerField()
+    ssn = models.CharField(max_length=11)
 
 class Salaried(models.Model):
     """ Salaried Emps """

@@ -9,3 +9,4 @@ pydotplus==2.0.2
 pyparsing==3.0.9
 sqlparse==0.4.3
 zipp==3.15.0
+Faker==18.4.0
