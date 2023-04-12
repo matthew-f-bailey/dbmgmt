@@ -1,11 +1,17 @@
-""" Skills and types """
+""" Skills and types
+- Surgeons have skills
+- A Surgery has a SurgeryType made of skills
+- If a surgeon has all those skills, he can perform it
+"""
 from django.db import models
 
 from hospital import constants
 
 class Skills(models.Model):
-    """ The db containing all skills surgeons can have """
-    name = models.CharField(max_length=100, choices=constants.SURGICAL_SKILLS)
+    """ The db containing all skills people can have
+    New skills can be added but to avoid hard coding in constants
+    """
+    name = models.CharField(max_length=100)
 
     def __str__(self) -> str:
         return self.name
@@ -25,11 +31,13 @@ class SurgeryType(models.Model):
         return f"{self.name} - {reqs}"
 
 
-class SurgeonSkills(models.Model):
+class AssignedSkills(models.Model):
     """ Links up what surgeons have what skills """
-    surgeon = models.ForeignKey(
-        "Surgeon",
-        on_delete=models.CASCADE, # Delete skill if surgeon gone
+    # All skilled persons can have skills
+    # nurses, surgeons need skills to perform surgeries
+    person = models.ForeignKey(
+        "SkilledPerson",
+        on_delete=models.CASCADE, # Delete skill link if person gone
     )
     skill = models.ForeignKey(
         "Skills",
@@ -37,4 +45,4 @@ class SurgeonSkills(models.Model):
     )
 
     def __str__(self) -> str:
-        return f"{self.surgeon.last_name}, {self.surgeon.first_name} - {self.skill.name}"
+        return f"{self.person.last_name}, {self.person.first_name} - {self.skill.name}"
