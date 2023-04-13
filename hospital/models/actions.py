@@ -18,6 +18,10 @@ class Surgery(models.Model):
         null=True,
         on_delete=models.SET_NULL
     )
+    patient = models.ForeignKey(
+        "Patient",
+        on_delete=models.CASCADE
+    )
     code = models.CharField(
         choices=constants.SURGERY_CODES,
         max_length=5
