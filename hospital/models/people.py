@@ -121,8 +121,8 @@ class Patient(Person):
         blank=True,
         null=True
     )
-    illnesses = models.ManyToManyField(Illness, blank=True, null=True)
-    allergies = models.ManyToManyField(Allergy, blank=True, null=True)
+    illnesses = models.ManyToManyField(Illness)
+    allergies = models.ManyToManyField(Allergy)
 
     # Medical Data
     blood_type = models.CharField(max_length=30, choices=constants.BLOOD_TYPE)
@@ -131,6 +131,9 @@ class Patient(Person):
     cholesterol_ldl = models.FloatField()
     cholesterol_tri = models.FloatField()
 
+
+# in-paitent is a patient who needs a bed and nurse
+class InPatient(Patient):
     # Room data
     admission_date = models.DateField(null=True)
     # We only need bed, as bed has a room, room has a unit
@@ -138,5 +141,8 @@ class Patient(Person):
         "Bed",
         on_delete=models.CASCADE,
         null=True
+    )
+    assigned_nurse = models.ForeignKey(
+        Nurse
     )
 
