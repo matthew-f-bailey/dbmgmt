@@ -39,11 +39,40 @@ class Surgery(models.Model):
 
 
 
-class Appointments(models.Model):
-    """ The act of a patient seeing a physician """
-    ...
+class Consultation(models.Model):
+    """ The act of a patient seeing a physician
+    Serves as scheudle of visits
+    """
+    physician = models.ForeignKey(
+        "Physician",
+        on_delete=models.CASCADE
+    )
+    patient = models.ForeignKey(
+        "Patient",
+        on_delete=models.CASCADE
+    )
+    date = models.DateField()
+
+    def __str__(self) -> str:
+        return (
+            f"Patient '{self.patient}' seeing Physician "
+            f"'{self.physician}' ({self.physician.specialty}) @ {self.date}"
+        )
 
 
 class Perscriptions(models.Model):
     """ Ties which dr gave which patient some med """
-    ...
+    physician = models.ForeignKey(
+        "Physician",
+        on_delete=models.SET_NULL,
+        null=True
+    )
+    # If patient or med deletes, remove this perscription
+    patient = models.ForeignKey(
+        "Patient",
+        on_delete=models.CASCADE
+    )
+    medication = models.ForeignKey(
+        "Medication",
+        on_delete=models.CASCADE
+    )

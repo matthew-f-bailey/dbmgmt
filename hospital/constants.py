@@ -9,6 +9,7 @@ GENDER = (('m', 'Male'), ('f', 'Female'))
 
 SPECIALTIES = (
     ("podiatry", "Podiatry"),
+    ("general", "General Practice"),
     ("optometry", "Optometry"),
 )
 
@@ -58,4 +59,12 @@ BLOOD_TYPE = (
 MED_INTERACTION = (
     ("s", "Sever Interaction"),
     ("m", "Moderate Interaction"),
-    ("l", "Little Interaction"),)
+    ("l", "Little Interaction"),
+)
+
+# Beds, rooms and units
+_UNITS = (
+    ("icu", "Intensive Care Unit"),
+    ("burn", "Burn Unit"),
+    ("infectious", "Infectious Disease Unit"),
+)

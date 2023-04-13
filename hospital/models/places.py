@@ -12,7 +12,7 @@ class Unit(models.Model):
     name = models.CharField(max_length=254)
     clinic = models.ForeignKey(
         Clinic,
-        on_delete =  models.CASCADE
+        on_delete=models.CASCADE
     )
 
 # room inside unit

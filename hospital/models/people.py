@@ -10,7 +10,7 @@ from hospital import constants
 
 def get_chief_of_staff():
     """ Get the chief of staff, special physisican """
-    cof = Physician.objects.get_or_create(
+    cos = Physician.objects.get_or_create(
         first_name="Chief",
         last_name="Staffton",
         dob=datetime(1960, 1, 1),
@@ -22,7 +22,7 @@ def get_chief_of_staff():
         ssn="123-45-6789"
     )
     # Returns bool of "if created" in cof[1]
-    return cof[0]
+    return cos[0]
 
 
 class Person(models.Model):
@@ -39,6 +39,9 @@ class Person(models.Model):
     address = models.CharField(max_length=254)
     phone = models.CharField(max_length=30)
     ssn = models.CharField(max_length=11)
+
+    def __str__(self) -> str:
+        return f"{self.last_name}, {self.first_name}"
 
 class SkilledPerson(Person):
     """ A person who can have skills assigned to them """
@@ -98,7 +101,15 @@ class Nurse(SkilledPerson, Salaried):
 class Physician(Person, Salaried):
     specialty = models.CharField(max_length=50, choices=constants.SPECIALTIES)
 
+    @classmethod
+    def get_chief_of_staff(cls):
+        """ Since pk is emp_number, we need this to set default
+        Default keyword wants pk, not instance
 
+        Returns the PK of the Chief of staff
+        """
+        cos = get_chief_of_staff()
+        return cos.emp_number
 
 class Patient(Person):
 
@@ -106,17 +117,12 @@ class Patient(Person):
     pcp = models.ForeignKey(
         Physician,
         on_delete=models.SET(get_chief_of_staff),
-        blank=True, null=True
+        default=Physician.get_chief_of_staff,
+        blank=True,
+        null=True
     )
     illnesses = models.ManyToManyField(Illness, blank=True, null=True)
     allergies = models.ManyToManyField(Allergy, blank=True, null=True)
-
-    # Deleting a perscription, deletes rel/
-    # a patient may have multiple medications. We need to have a seperate table for prescribtions
-    #perscriptions = models.ForeignKey(
-    #   Perscription,
-    #   on_delete=models.CASCADE
-    #)
 
     # Medical Data
     blood_type = models.CharField(max_length=30, choices=constants.BLOOD_TYPE)
@@ -124,3 +130,13 @@ class Patient(Person):
     cholesterol_hdl = models.FloatField()
     cholesterol_ldl = models.FloatField()
     cholesterol_tri = models.FloatField()
+
+    # Room data
+    admission_date = models.DateField(null=True)
+    # We only need bed, as bed has a room, room has a unit
+    bed = models.ForeignKey(
+        "Bed",
+        on_delete=models.CASCADE,
+        null=True
+    )
+

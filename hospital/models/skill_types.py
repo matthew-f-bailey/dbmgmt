@@ -23,7 +23,7 @@ class SurgeryType(models.Model):
     Nurses will also have one of these types assigned to them but don't need to worry
     about specific skills
     """
-    name = models.CharField(max_length=50, primary_key=True)
+    name = models.CharField(max_length=50)
     requirements = models.ManyToManyField("Skills")
 
     def __str__(self) -> str:

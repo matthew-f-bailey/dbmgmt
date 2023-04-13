@@ -1,9 +1,12 @@
+import os
+import shutil
 from datetime import datetime
 
 from django.core.management.base import BaseCommand
 from django.core.management import call_command
 from faker import Faker
 
+from hospital.models.actions import Consultation
 from hospital.models.places import Clinic
 from hospital.models.people import (
     Nurse,
@@ -15,11 +18,24 @@ from hospital.models.people import (
 from hospital.models.skill_types import Skills, AssignedSkills, SurgeryType
 from hospital import constants
 
+from dbmgmt.settings import BASE_DIR
 
 fake = Faker()
 
 class Command(BaseCommand):
     help = 'Deletes current and recreates the mock database'
+
+    def reset_db(self):
+        # Verify migrations are made and db gets them
+        try:
+            os.remove(f"{BASE_DIR}/db.sqlite3")
+        except FileNotFoundError:
+            pass
+        shutil.rmtree(f"{BASE_DIR}/hospital/migrations", ignore_errors=True)
+        call_command("makemigrations", "hospital")
+        call_command("makemigrations")
+        call_command("migrate", "hospital")
+        call_command("migrate")
 
     def populate_constants(self):
         """ Populate constants into their own tables """
@@ -154,13 +170,62 @@ class Command(BaseCommand):
 
         return nurse
 
+    def create_general_physician(self):
+        phys = Physician(
+            specialty="general",
+            salary=150_000,
+            first_name="Al",
+            last_name="Gener",
+            dob=datetime(1940, 5, 5),
+            gender="M",
+            address="123 General Way",
+            phone=fake.phone_number(),
+            ssn=fake.ssn(),
+        )
+        phys.save()
+        print(f"Created Physician of '{phys}'")
+        return phys
+
+    def create_optomotrist(self):
+        phys = Physician(
+            specialty="optometry",
+            salary=180_000,
+            first_name="Cornealeus",
+            last_name="John",
+            dob=datetime(1945, 5, 5),
+            gender="M",
+            address="123 Eye Ct",
+            phone=fake.phone_number(),
+            ssn=fake.ssn(),
+        )
+        phys.save()
+        print(f"Created Optomotrist of '{phys}'")
+        return phys
+
+    def create_general_patient(self):
+        patient = Patient(
+            first_name="Pat",
+            last_name="Entman",
+            dob=datetime(1980, 5, 5),
+            gender="M",
+            address="123 Patient Dr",
+            phone=fake.phone_number(),
+            ssn=fake.ssn(),
+            blood_type="op",
+            blood_sugar="12",
+            cholesterol_hdl="6",
+            cholesterol_ldl="5",
+            cholesterol_tri="8",
+        )
+        patient.save()
+        print(f"Created Patient of '{patient}'")
+        return patient
+
+
     def handle(self, *args, **options):
         """ Call the command """
 
-        # Verify migrations are made and db gets them
-        call_command("flush")
-        call_command("makemigrations")
-        call_command("migrate")
+        self.reset_db()
 
         # Start creating mock data and relations
         print("Mocking up the database...")
@@ -180,3 +245,32 @@ class Command(BaseCommand):
 
         # Create a plastic surgery nurse
         plastic_nurse = self.create_plastic_nurse()
+
+        # Create a physicians
+        general_physician = self.create_general_physician()
+        optomotrist = self.create_optomotrist()
+
+        # Create a patient (auto assigned to cheif)
+        general_patient = self.create_general_patient()
+        assert general_patient.pcp == chief
+
+        # Assign patient from COF to general
+        general_patient.pcp = general_physician
+        general_patient.save()
+
+        # Get this patient in for consultation
+        general_patient_visit = Consultation(
+            physician=general_physician,
+            patient=general_patient,
+            date=datetime.now()
+        )
+        general_patient_visit.save()
+        print(general_patient_visit)
+
+        # Patient can also see opt, who is not primary
+        opt_visit = Consultation(
+            physician=optomotrist,
+            patient=general_patient,
+            date=datetime(2023, 8, 1)
+        )
+        print(opt_visit)
