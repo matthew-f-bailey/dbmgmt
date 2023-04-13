@@ -7,7 +7,7 @@ from django.core.management import call_command
 from faker import Faker
 
 from hospital.models.actions import Consultation
-from hospital.models.places import Clinic
+from hospital.models.places import Unit, Bed, Room
 from hospital.models.people import (
     Nurse,
     Patient,
@@ -59,6 +59,22 @@ class Command(BaseCommand):
         create_type("neurosurgery", ["brain", "head_trauma"])
         create_type("cardiac_surgery", ["cardiac_arrest", "heart_valve"])
         create_type("plastic_surgery", ["rhinoplasty", "facelift"])
+
+        # Create all beds and such
+        for code, name in constants._UNITS:
+            u = Unit(name=name, prefix=code)
+            u.save()
+
+            # Give all units 10 rooms
+            for i in range(1, 10):
+                r = Room(number=i, unit=u)
+                r.save()
+
+                Bed(room=r, bed_letter="A").save()
+                Bed(room=r, bed_letter="B").save()
+                # Give even sides 3 beds, odd 2
+                if i%2==0:
+                    Bed(room=r, bed_letter="C").save()
 
     def create_neurosurgeon(self):
         """ Creates a neurosurgeon and makes sure he can perform """
@@ -274,3 +290,20 @@ class Command(BaseCommand):
             date=datetime(2023, 8, 1)
         )
         print(opt_visit)
+
+        # Give patient a bed and room, make sure admitted works
+        bed_names = {
+            "gcu-1A": type(None), # Patient w/ no bed, before update this is null
+            "gcu-2A": datetime, # Moving patient to new bed, has admitted time
+            None: datetime, # Admitted time there from last, removing bed relation
+        }
+        for bed_name, admitted_type in bed_names.items():
+            assert isinstance(general_patient.admission_date, admitted_type)
+            bed = Bed.objects.get_bed_by_code(bed_name)
+            general_patient.bed = bed
+            general_patient.save()
+
+        # Patient comes out in gcu-1A bed
+        general_patient.bed = Bed.objects.get_bed_by_code("gcu-1A")
+        general_patient.save()
+        print("HERE")

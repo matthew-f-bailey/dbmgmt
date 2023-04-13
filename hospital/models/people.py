@@ -1,8 +1,11 @@
 from datetime import datetime
 import uuid
 
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from dirtyfields import DirtyFieldsMixin
 
 from hospital.models.illnesses import Illness, Allergy, Medication
 from hospital import constants
@@ -111,7 +114,7 @@ class Physician(Person, Salaried):
         cos = get_chief_of_staff()
         return cos.emp_number
 
-class Patient(Person):
+class Patient(Person, DirtyFieldsMixin):
 
     # Patients have 1 physician, if leaves, give to chief of staff
     pcp = models.ForeignKey(
@@ -136,7 +139,29 @@ class Patient(Person):
     # We only need bed, as bed has a room, room has a unit
     bed = models.ForeignKey(
         "Bed",
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
+        blank=True,
         null=True
     )
 
+@receiver(pre_save, sender=Patient)
+def update_admission_date(sender, instance, *args, **kwargs):
+    """
+    When a patient goes from no bed to a bed, they become admitted and time updates
+    When a patient swithces beds without leaving, no change in admission date
+    When a patient leaves bed completely, unadmitted and time is removed.
+    """
+    last_bed = instance.get_dirty_fields(check_relationship=True).get('bed')
+    new_bed = instance.bed
+    if last_bed is None and new_bed:
+        admitted_date = datetime.now()
+        print(
+            f"Patient '{instance}' going from no bed to {new_bed}."
+            f" Updating admitted_date to {admitted_date}"
+        )
+        instance.admission_date = admitted_date
+    elif new_bed:
+        print(f"Patient '{instance}' going to new bed of {new_bed}")
+    else:
+        print(f"Patient '{instance}' leaving from bed. Unadmitting..")
+        instance.admission_date = None
