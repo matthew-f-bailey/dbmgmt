@@ -1,51 +1,36 @@
 {% extends "base.html" %}
+{% load static %}
 
-{% block content %} 
+{% block header %}
+Welcome
+{% endblock %}
+
+{% block content %}
 <div class="container">
+
     <div class = "row">
         <div class="col">
-            <h1> </h1>
+            <h1> Welcome to Newark Medical Associates Admin Portal</h1>
         </div>
     </div>
     <div class = "row">
         <div class="col">
-            <h1> </h1>
+            <h3>Serving {{ patients.count }} patients</h3>
         </div>
     </div>
     <div class = "row">
         <div class="col">
-            <h1> </h1>
+            <h3>With a network of {{ physicians.count }} Physicians</h3>
         </div>
     </div>
     <div class = "row">
         <div class="col">
-            <h1>{{ clinic.name }}</h1>
-        </div>
-        <div class="col">
+            <h3>Over {{ surgeons.count }} Surgeons</h3>
         </div>
     </div>
     <div class = "row">
         <div class="col">
-            <h3>{{ clinic.address }}</h3>
-        </div>
-        <div class="col">
-            <h2> Welcom to Home Page</h2>
-        </div>
-    </div>
-    <div class = "row">
-        <div class="col">
-            <h3>{{ clinic.email }}</h3>
-        </div>
-        <div class="col">
-            <h4> Select one of the options in navigation bar</h4>
-        </div>
-    </div>
-    <div class = "row">
-        <div class="col">
-            <h3>{{ clinic.phone }}</h3>
-        </div>
-        <div class="col">
-            
+            <h3>And {{ nurses.count }} Nurses</h3>
         </div>
     </div>
 </div>
