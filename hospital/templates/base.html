@@ -61,7 +61,7 @@
 
       <nav id="navbar" class="navbar order-last order-lg-0">
         <ul>
-          <li><a class="nav-link scrollto" href="#hero">Home</a></li>
+          <li><a class="nav-link scrollto" href={% url 'hospital-home' %}>Home</a></li>
           <li class="dropdown"><a href="#"><span>Staff</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href="#">Manage Physicians</a></li>
@@ -69,12 +69,42 @@
               <li><a href="#">Manage Nurses</a></li>
             </ul>
           </li>
-          <li><a class="nav-link scrollto" href="#about">Patients</a></li>
-          <li><a class="nav-link scrollto" href="#about">Consultations</a></li>
-          <li><a class="nav-link scrollto" href="#services">Rooms/Beds</a></li>
-          <li><a class="nav-link scrollto" href="#departments">Surgeries</a></li>
-          <li><a class="nav-link scrollto" href="#doctors">Perscriptions</a></li>
-          <li><a class="nav-link scrollto" href="#doctors">Medications</a></li>
+          <li class="dropdown"><a href="#"><span>Patients</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a href="{% url 'create_patient_view' %}">Add New Patient</a></li>
+              <li><a href="#">Search Patients</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><a href="#"><span>Consultations</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a href="#">Schedule Consultation</a></li>
+              <li><a href="#">Search Consultation</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><a href="#"><span>Rooms/Beds</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a href="#">Assign Patient Bed</a></li>
+              <li><a href="#">Search Rooms/Beds</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><a href="#"><span>Surgeries</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a href="#">Schedule Surgery</a></li>
+              <li><a href="#">View Surgeries</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><a href="#"><span>Perscriptions</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a href="#">Assign Perscription</a></li>
+              <li><a href="#">View Perscriptions</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><a href="#"><span>Medications</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a href="#">Add New Medication</a></li>
+              <li><a href="#">View Medications</a></li>
+            </ul>
+          </li>
 
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>

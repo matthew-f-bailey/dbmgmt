@@ -1,9 +1,9 @@
 from django.shortcuts import render
-from .models.people import Physician, Patient, Nurse, Surgeon
+from hospital.models.people import Physician, Patient, Nurse, Surgeon
 
 # Create your views here.
 
-def home(request):
+def home_view(request):
     counts = {
         "physicians": Physician.objects.all(),
         "surgeons": Surgeon.objects.all(),
@@ -11,3 +11,4 @@ def home(request):
         "patients": Patient.objects.all(),
     }
     return render(request, 'home.html', counts)
+
