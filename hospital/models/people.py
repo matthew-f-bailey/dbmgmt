@@ -121,8 +121,8 @@ class Patient(Person):
         blank=True,
         null=True
     )
-    illnesses = models.ManyToManyField(Illness)
-    allergies = models.ManyToManyField(Allergy)
+    illnesses = models.ManyToManyField(Illness, blank = True)
+    allergies = models.ManyToManyField(Allergy, blank = True)
 
     # Medical Data
     blood_type = models.CharField(max_length=30, choices=constants.BLOOD_TYPE)
@@ -132,14 +132,12 @@ class Patient(Person):
     cholesterol_tri = models.FloatField()
 
     # To calculate total cholesterol
-    @property
     def total_cholesterol_calc(self):
         if (self.cholesterol_hdl and self.cholesterol_ldl and self.cholesterol_tri):
             return self.cholesterol_hdl + self.cholesterol_ldl + 0.2 * self.cholesterol_tri
         else:
             return None
     # Risk of heart disease
-    @property
     def heart_risk_calc(self):
         if (self.total_cholesterol_calc()):
             chole_ratio = self.total_cholesterol_calc()/self.cholesterol_hdl
@@ -170,7 +168,7 @@ class Patient(Person):
 # In-paitent is a patient who needs a bed and nurse
 class InPatient(Patient):
     # Room data
-    admission_date = models.DateField(null=True)
+    admission_date = models.DateField()
     # We only need bed, as bed has a room, room has a unit
     bed = models.ForeignKey(
         "Bed",
@@ -178,6 +176,8 @@ class InPatient(Patient):
         null=True
     )
     assigned_nurse = models.ForeignKey(
-        Nurse
+        Nurse,
+        null = True,
+        on_delete = models.SET_NULL
     )
 
