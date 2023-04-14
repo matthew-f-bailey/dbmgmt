@@ -27,3 +27,5 @@ class Interactions(models.Model):
 
 class Allergy(models.Model):
     name = models.CharField(max_length=100)
+    allergy_code = models.CharField(max_length=10)
+    description = models.CharField(max_length=1_000)

@@ -131,8 +131,43 @@ class Patient(Person):
     cholesterol_ldl = models.FloatField()
     cholesterol_tri = models.FloatField()
 
+    # To calculate total cholesterol
+    @property
+    def total_cholesterol_calc(self):
+        if (self.cholesterol_hdl and self.cholesterol_ldl and self.cholesterol_tri):
+            return self.cholesterol_hdl + self.cholesterol_ldl + 0.2 * self.cholesterol_tri
+        else:
+            return None
+    # Risk of heart disease
+    @property
+    def heart_risk_calc(self):
+        if (self.total_cholesterol_calc()):
+            chole_ratio = self.total_cholesterol_calc()/self.cholesterol_hdl
+            if chole_ratio < 4 :
+                return "n"
+            elif chole_ratio >=4 and chole_ratio < 5:
+                return "l"
+            elif chole_ratio >=5:
+                return "m"
+        else: return None
+    # Tields to store the calculated values
+    total_cholesterol = models.FloatField(blank=True, null=True)
+    heart_risk = models.CharField(
+        choices = constants.HEART_RISK,
+        max_length=1,
+        blank=True, null=True
+        )
+    # Save calculated values 
+    def save(self, *args, **kwargs):
+        self.total_cholesterol = self.total_cholesterol_calc()
+        if self.heart_risk != "h":
+            self.heart_risk = self.heart_risk_calc()
+        super(Patient, self).save(*args, **kwargs)
 
-# in-paitent is a patient who needs a bed and nurse
+    
+
+
+# In-paitent is a patient who needs a bed and nurse
 class InPatient(Patient):
     # Room data
     admission_date = models.DateField(null=True)

@@ -64,14 +64,14 @@ class Consultation(models.Model):
         )
 
 
-class Perscriptions(models.Model):
+class Prescriptions(models.Model):
     """ Ties which dr gave which patient some med """
     physician = models.ForeignKey(
         "Physician",
         on_delete=models.SET_NULL,
         null=True
     )
-    # If patient or med deletes, remove this perscription
+    # If patient or med deletes, remove this prescription
     patient = models.ForeignKey(
         "Patient",
         on_delete=models.CASCADE
@@ -80,3 +80,5 @@ class Perscriptions(models.Model):
         "Medication",
         on_delete=models.CASCADE
     )
+    frequency = models.CharField(max_length=100)
+    dosage = models.CharField(max_length=100)

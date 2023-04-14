@@ -32,6 +32,14 @@ ANATOMICAL_LOCATIONS = (
     ("foot", "Foot"),
     ("head", "Head")
 )
+# High is not function of cholesterol but it can selected by user
+HEART_RISK = (
+    ("n","None"),
+    ("l","Low"),
+    ("m","Moderate"),
+    ("h","High")
+)
+
 _SURGICAL_SKILLS = (
     ("transplant", "Organ Transplants"), # general
     ("wound", "Wound Care"), # general
