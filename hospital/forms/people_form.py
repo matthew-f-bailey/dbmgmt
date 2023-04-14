@@ -19,11 +19,6 @@ class PatientForm(BootstrapForm):
             'cholesterol_hdl',
             'cholesterol_ldl',
             'cholesterol_tri',
+            'total_cholesterol',
+            'heart_risk'
         ]
-
-# # Creating a form to add an article.
-# form = ArticleForm()
-
-# # Creating a form to change an existing article.
-# article = Article.objects.get(pk=1)
-# form = ArticleForm(instance=article)
