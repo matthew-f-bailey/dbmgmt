@@ -72,7 +72,9 @@ MED_INTERACTION = (
 
 # Beds, rooms and units
 _UNITS = (
+    ("gcu", "General Care Unit"),
+    ("pou", "Post Operation Unit"),
     ("icu", "Intensive Care Unit"),
-    ("burn", "Burn Unit"),
-    ("infectious", "Infectious Disease Unit"),
+    ("brn", "Burn Unit"),
+    ("inf", "Infectious Disease Unit"),
 )
