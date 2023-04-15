@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block header %}
+Create Patient
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <form id="the-form" method="POST" action="{{ post_to }}">
+        {% csrf_token %}
+        {% for dict in formset.errors %}
+            {% for error in dict.values %}
+                {{ error }}
+            {% endfor %}
+        {% endfor %}
+        <div class="form-group">
+            {{ model_form }}
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+{% endblock %}
