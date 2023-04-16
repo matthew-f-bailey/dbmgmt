@@ -12,8 +12,10 @@ class Illness(models.Model):
 
 class Medication(models.Model):
     name = models.CharField(max_length=30)
-    dosage = models.FloatField(max_length=30)
-    frequency = models.CharField(max_length=100)
+    code = models.PositiveIntegerField()
+    available_qnty = models.PositiveIntegerField()
+    cost = models.FloatField()
+    usage = models.CharField(max_length=254)
 
     # Lists of interactions this med may have
     interaction = models.ManyToManyField("self", through="Interactions")
