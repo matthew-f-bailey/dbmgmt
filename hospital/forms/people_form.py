@@ -19,6 +19,5 @@ class PatientForm(BootstrapForm):
             'cholesterol_hdl',
             'cholesterol_ldl',
             'cholesterol_tri',
-            'total_cholesterol',
             'heart_risk'
         ]

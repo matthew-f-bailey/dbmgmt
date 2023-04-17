@@ -11,7 +11,8 @@ def create_patient_view(request):
         return render(
             request,
             "create_form.html",
-            {
+            {   
+                "header": "Create Patient",
                 "model_form": patient_form,
                 "post_to": reverse("create_patient_view")
             }

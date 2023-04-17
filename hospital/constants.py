@@ -59,13 +59,19 @@ _SURGICAL_TYPES = (
 
 # Medical
 BLOOD_TYPE = (
+    ("ap", "A Positive"),
+    ("an", "A Negative"),
+    ("bp", "B Positive"),
+    ("bn", "B Negative"),
+    ("abp", "AB Positive"),
+    ("abn", "AB Negative"),
     ("op", "O Positive"),
     ("on", "O Negative"),
 )
 
 # Medication interaction severities
 MED_INTERACTION = (
-    ("s", "Sever Interaction"),
+    ("s", "Severe Interaction"),
     ("m", "Moderate Interaction"),
     ("l", "Little Interaction"),
 )

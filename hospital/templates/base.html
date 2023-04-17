@@ -101,8 +101,9 @@
           </li>
           <li class="dropdown"><a href="#"><span>Medications</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
-              <li><a href="#">Add New Medication</a></li>
+              <li><a href="{% url 'create_medication_view' %}">Add New Medication</a></li>
               <li><a href="#">View Medications</a></li>
+              <li><a href="{% url 'create_medication_interaction' %}">Medication Interaction</a></li>
             </ul>
           </li>
 

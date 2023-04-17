@@ -22,9 +22,12 @@ class Medication(models.Model):
 
 # Interactions intermediate table
 class Interactions(models.Model):
-    med1 = models.ForeignKey(Medication, on_delete = models.CASCADE, related_name="first_med")
-    med2 = models.ForeignKey(Medication, on_delete = models.CASCADE, related_name = "second_med")
+    medication1 = models.ForeignKey(Medication, on_delete = models.CASCADE, related_name="first_med")
+    medication2 = models.ForeignKey(Medication, on_delete = models.CASCADE, related_name = "second_med")
     severity = models.CharField(choices=MED_INTERACTION, max_length=1)
+    # to avoid duplicate records of interaction between the same medciations
+    class Meta:
+        unique_together = ('medication1','medication2')
 
 
 class Allergy(models.Model):
