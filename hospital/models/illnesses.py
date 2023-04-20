@@ -12,18 +12,25 @@ class Illness(models.Model):
 
 class Medication(models.Model):
     name = models.CharField(max_length=30)
-    dosage = models.FloatField(max_length=30)
-    frequency = models.CharField(max_length=100)
+    code = models.PositiveIntegerField()
+    available_qnty = models.PositiveIntegerField()
+    cost = models.FloatField()
+    usage = models.CharField(max_length=254)
 
     # Lists of interactions this med may have
     interaction = models.ManyToManyField("self", through="Interactions")
 
 # Interactions intermediate table
 class Interactions(models.Model):
-    med1 = models.ForeignKey(Medication, on_delete = models.CASCADE, related_name="first_med")
-    med2 = models.ForeignKey(Medication, on_delete = models.CASCADE, related_name = "second_med")
+    medication1 = models.ForeignKey(Medication, on_delete = models.CASCADE, related_name="first_med")
+    medication2 = models.ForeignKey(Medication, on_delete = models.CASCADE, related_name = "second_med")
     severity = models.CharField(choices=MED_INTERACTION, max_length=1)
+    # to avoid duplicate records of interaction between the same medciations
+    class Meta:
+        unique_together = ('medication1','medication2')
 
 
 class Allergy(models.Model):
     name = models.CharField(max_length=100)
+    allergy_code = models.CharField(max_length=10)
+    description = models.CharField(max_length=1_000)

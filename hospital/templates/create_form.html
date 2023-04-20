@@ -2,11 +2,22 @@
 {% load static %}
 
 {% block header %}
-Create Patient
+{{ header }}
+
 {% endblock %}
+
+
 
 {% block content %}
 <div class="container">
+    {% if messages %}
+        {% for message in messages %}
+            <div class ="alert alert-danger" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
     <form id="the-form" method="POST" action="{{ post_to }}">
         {% csrf_token %}
         {% for dict in formset.errors %}

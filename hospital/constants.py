@@ -32,6 +32,14 @@ ANATOMICAL_LOCATIONS = (
     ("foot", "Foot"),
     ("head", "Head")
 )
+# High is not function of cholesterol but it can selected by user
+HEART_RISK = (
+    ("n","None"),
+    ("l","Low"),
+    ("m","Moderate"),
+    ("h","High")
+)
+
 _SURGICAL_SKILLS = (
     ("transplant", "Organ Transplants"), # general
     ("wound", "Wound Care"), # general
@@ -51,13 +59,19 @@ _SURGICAL_TYPES = (
 
 # Medical
 BLOOD_TYPE = (
+    ("ap", "A Positive"),
+    ("an", "A Negative"),
+    ("bp", "B Positive"),
+    ("bn", "B Negative"),
+    ("abp", "AB Positive"),
+    ("abn", "AB Negative"),
     ("op", "O Positive"),
     ("on", "O Negative"),
 )
 
 # Medication interaction severities
 MED_INTERACTION = (
-    ("s", "Sever Interaction"),
+    ("s", "Severe Interaction"),
     ("m", "Moderate Interaction"),
     ("l", "Little Interaction"),
 )
