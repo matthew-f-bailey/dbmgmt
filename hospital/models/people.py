@@ -7,6 +7,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from dirtyfields import DirtyFieldsMixin
 
+from hospital.models.base_model import ShowAllDetailsMixin
 from hospital.models.illnesses import Illness, Allergy, Medication
 from hospital import constants
 
@@ -28,7 +29,7 @@ def get_chief_of_staff():
     return cos[0]
 
 
-class Person(models.Model):
+class Person(models.Model, ShowAllDetailsMixin):
     """ Base model for all people """
     emp_number = models.UUIDField(
         primary_key=True,
@@ -133,45 +134,8 @@ class Patient(Person, DirtyFieldsMixin):
     cholesterol_hdl = models.FloatField()
     cholesterol_ldl = models.FloatField()
     cholesterol_tri = models.FloatField()
-
-    # To calculate total cholesterol
-    def total_cholesterol_calc(self):
-        if (self.cholesterol_hdl and self.cholesterol_ldl and self.cholesterol_tri):
-            return self.cholesterol_hdl + self.cholesterol_ldl + 0.2 * self.cholesterol_tri
-        else:
-            return None
-    # Risk of heart disease
-    def heart_risk_calc(self):
-        if (self.total_cholesterol_calc()):
-            chole_ratio = self.total_cholesterol_calc()/self.cholesterol_hdl
-            if chole_ratio < 4 :
-                return "n"
-            elif chole_ratio >=4 and chole_ratio < 5:
-                return "l"
-            elif chole_ratio >=5:
-                return "m"
-        else: return None
-    # Tields to store the calculated values
-    total_cholesterol = models.FloatField(blank=True, null=True)
-    heart_risk = models.CharField(
-        choices = constants.HEART_RISK,
-        max_length=1,
-        blank=True, null=True
-        )
-    # Save calculated values 
-    def save(self, *args, **kwargs):
-        self.total_cholesterol = self.total_cholesterol_calc()
-        if self.heart_risk != "h":
-            self.heart_risk = self.heart_risk_calc()
-        super(Patient, self).save(*args, **kwargs)
-
-    
-
-
-# In-paitent is a patient who needs a bed and nurse
-class InPatient(Patient):
     # Room data
-    admission_date = models.DateField()
+    admission_date = models.DateField(null=True)
     # We only need bed, as bed has a room, room has a unit
     bed = models.ForeignKey(
         "Bed",
@@ -184,6 +148,31 @@ class InPatient(Patient):
         null = True,
         on_delete = models.SET_NULL
     )
+
+    # To calculate total cholesterol
+    @property
+    def total_cholesterol(self):
+        # Calculated fields are best as properties, they can get out of whack if assigned to a field on a save
+        if (self.cholesterol_hdl and self.cholesterol_ldl and self.cholesterol_tri):
+            return self.cholesterol_hdl + self.cholesterol_ldl + 0.2 * self.cholesterol_tri
+        else:
+            # Keep return values consistent of float
+            return 0.0
+
+    # Risk of heart disease
+    @property
+    def heart_risk(self):
+        if not self.total_cholesterol:
+            return None
+
+        chole_ratio = self.total_cholesterol/self.cholesterol_hdl
+        if chole_ratio < 4 :
+            return "n"
+        elif chole_ratio >=4 and chole_ratio < 5:
+            return "l"
+        elif chole_ratio >=5:
+            return "m"
+
 
 @receiver(pre_save, sender=Patient)
 def update_admission_date(sender, instance, *args, **kwargs):
