@@ -3,6 +3,8 @@ from django.urls import reverse
 from hospital.forms.medication_form import MedicationForm, InteractionForm
 from django.shortcuts import redirect, render
 from django.contrib import messages
+from django.views.generic import ListView, DetailView
+from hospital.models.illnesses import Medication
 
 # To add a new medication
 def create_medication_view(request):
@@ -24,6 +26,17 @@ def create_medication_view(request):
             print(medication_form)
             # Once a medication is created redirect to medicatoin interacion page
             return redirect("create_medication_interaction")
+        
+# class based view to view medications
+
+class MedicationListView(ListView):
+    model = Medication
+    template_name = 'view_list.html'
+
+class MedicationDetailView(DetailView):
+    model = Medication
+    template_name = 'Medication_detail_view.html'
+
 
 # To add interaction between medications
 def create_medication_interaction(request):
