@@ -6,7 +6,11 @@ from hospital.views import medication_view
 
 urlpatterns = [
     path('', home_view.home_view , name='hospital-home'),
-    path('create_patient.html', people_view.create_patient_view , name='create_patient_view'),
+    # Patient Create/List/Detail
+    path('create_patient', people_view.PatientCreateView.as_view(template_name="create_form.html") , name='create_patient_view'),
+    path('list_patient.html', people_view.PatientListView.as_view(template_name="patient_list.html") , name='list_patient_view'),
+    path('detail_patient/<pk>', people_view.PatientDetailView.as_view(template_name="patient_detail.html") , name='detail_patient_view'),
+    # Medication
     path('create_medication.html', medication_view.create_medication_view , name = 'create_medication_view'),
     path('medication_interaction.html', medication_view.create_medication_interaction , name = 'create_medication_interaction')
 ]

@@ -17,6 +17,7 @@ def create_medication_view(request):
                 "post_to": reverse("create_medication_view")
             }
         )
+
     elif request.method == "POST":
         medication_form = MedicationForm(request.POST)
         if medication_form.is_valid():
