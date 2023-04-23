@@ -15,6 +15,30 @@
             </div>
             <p class="mb-1">Code: {{ object.code }}</p>
             <small>{{ object.usage }}</small>
+            <h5></h5>
+            <h5></h5>
+            {% if interactions %}
+                <h6>Interacts with </h6>
+                <table class = "table">
+                    <tr>
+                        <th> Code </th>
+                        <th> Name </th>
+                        <th> Severity </th>
+                    </tr>
+                    {% for interaction in interactions %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'view_medications' interaction.0 %}" > 
+                                {{ interaction.1 }}
+                                </a>
+                            </td> 
+                            <td>  {{ interaction.2 }}</td>
+                        <td>  {{ interaction.3 }}</td>  
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            </table>
+               
         </div>
 
 {% endblock %}
