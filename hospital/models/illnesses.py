@@ -18,13 +18,15 @@ class Medication(models.Model):
     usage = models.CharField(max_length=254)
 
     # Lists of interactions this med may have
-    interaction = models.ManyToManyField("self", through="Interactions")
+    interaction = models.ManyToManyField("self", through="Interactions", symmetrical=False)
+    def __str__(self) -> str:
+        return f"{self.code}, {self.name}"
 
 # Interactions intermediate table
 class Interactions(models.Model):
-    medication1 = models.ForeignKey(Medication, on_delete = models.CASCADE, related_name="first_med")
+    medication1 = models.ForeignKey(Medication, on_delete = models.CASCADE, related_name = "first_med")
     medication2 = models.ForeignKey(Medication, on_delete = models.CASCADE, related_name = "second_med")
-    severity = models.CharField(choices=MED_INTERACTION, max_length=1)
+    severity = models.CharField(choices = MED_INTERACTION, max_length=1)
     # to avoid duplicate records of interaction between the same medciations
     class Meta:
         unique_together = ('medication1','medication2')

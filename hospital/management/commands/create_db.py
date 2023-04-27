@@ -15,6 +15,8 @@ from hospital.models.people import (
     Surgeon,
     get_chief_of_staff,
 )
+from hospital.models.illnesses import Medication
+
 from hospital.models.skill_types import Skills, AssignedSkills, SurgeryType
 from hospital import constants
 
@@ -236,6 +238,34 @@ class Command(BaseCommand):
         patient.save()
         print(f"Created Patient of '{patient}'")
         return patient
+    
+    def create_medication1(self):
+        medication1 = Medication(
+            name = "Tylenol",
+            code = 1001,
+            available_qnty = 35,
+            cost = 4.5,
+            usage = """ Acetaminophen is used to relieve mild to moderate pain from headaches,
+                             muscle aches, menstrual periods, colds and sore throats, toothaches, 
+                             and to reduce fever."""
+        )
+        medication1.save()
+        print(f"Created Medication of '{medication1}'")
+        return medication1
+    
+    def create_medication2(self):
+        medication2 = Medication(
+            name = "Advil",
+            code = 1002,
+            available_qnty = 46,
+            cost = 6.25,
+            usage = """ Ibuprofen is used to relieve pain from various conditions such as headache, 
+            dental pain, menstrual cramps, muscle aches, or arthritis. It is also used to reduce fever 
+            and to relieve minor aches and pain due to the common cold or flu."""
+        )
+        medication2.save()
+        print(f"Created Medication of '{medication2}'")
+        return medication2
 
 
     def handle(self, *args, **options):
@@ -269,6 +299,10 @@ class Command(BaseCommand):
         # Create a patient (auto assigned to cheif)
         general_patient = self.create_general_patient()
         assert general_patient.pcp == chief
+
+        # Create medication1 and medication2
+        medication1 = self.create_medication1()
+        medication2 = self.create_medication2()
 
         # Assign patient from COF to general
         general_patient.pcp = general_physician

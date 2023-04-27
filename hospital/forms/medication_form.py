@@ -14,14 +14,10 @@ class MedicationForm(BootstrapForm):
             'usage'
         ]
 
-# Overide label function to show medication name and code in dropdown
-class InteractionModelChoice(forms.ModelChoiceField):
-    def label_from_instance(self, obj):
-        return f'{obj.name}, {obj.code}'
     
 class InteractionForm(BootstrapForm):
-    medication1 = InteractionModelChoice(queryset= Medication.objects.all())
-    medication2 = InteractionModelChoice(queryset= Medication.objects.all())
+    medication1 = forms.ModelChoiceField(queryset= Medication.objects.all())
+    medication2 = forms.ModelChoiceField(queryset= Medication.objects.all())
     class Meta:
         model = Interactions
         fields = [

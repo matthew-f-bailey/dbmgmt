@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block header %}
+{{ header }}
+
+{% endblock %}
+
+
+{% block content %}
+           <div class="list-group">
+                <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1 text-primary">{{ object.name }}</h5>
+                <small>Available Quantity: {{ object.available_qnty }} </small>
+            </div>
+            <p class="mb-1">Code: {{ object.code }}</p>
+            <small>{{ object.usage }}</small>
+            <h5></h5>
+            <h5></h5>
+            {% if interactions %}
+                <h6>Interacts with </h6>
+                <table class = "table">
+                    <tr>
+                        <th> Code </th>
+                        <th> Name </th>
+                        <th> Severity </th>
+                    </tr>
+                    {% for interaction in interactions %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'view_medications' interaction.0 %}" > 
+                                {{ interaction.1 }}
+                                </a>
+                            </td> 
+                            <td>  {{ interaction.2 }}</td>
+                        <td>  {{ interaction.3 }}</td>  
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            </table>
+               
+        </div>
+
+{% endblock %}

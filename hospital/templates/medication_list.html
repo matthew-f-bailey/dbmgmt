@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block header %}
+{{ header }}
+
+{% endblock %}
+
+
+{% block content %}
+    {% for object in object_list %}
+        <div class="list-group">
+            <a href="{% url 'view_medications' object.id %}" class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1 text-primary">{{ object.name }}</h5>
+                <small>Available Quantity: {{ object.available_qnty }} </small>
+            </div>
+            <p class="mb-1">Code: {{ object.code }}</p>
+            <small>{{ object.usage }}</small>
+            <p class="mb-3"><u> Interacts with {{object.interactions_count}} medicines </u></p>
+            </a>
+        </div>
+    {% endfor %}
+
+{% endblock %}
