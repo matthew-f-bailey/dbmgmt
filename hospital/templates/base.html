@@ -77,8 +77,8 @@
           </li>
           <li class="dropdown"><a href="#"><span>Consultations</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
-              <li><a href="#">Schedule Consultation</a></li>
-              <li><a href="#">Search Consultation</a></li>
+              <li><a href="{% url 'create_consultation_view' %}">Schedule Consultation</a></li>
+              <li><a href="{% url 'list_consultation_view' %}">Search Consultations</a></li>
             </ul>
           </li>
           <li class="dropdown"><a href="#"><span>Rooms/Beds</span> <i class="bi bi-chevron-down"></i></a>
@@ -89,8 +89,8 @@
           </li>
           <li class="dropdown"><a href="#"><span>Surgeries</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
-              <li><a href="#">Schedule Surgery</a></li>
-              <li><a href="#">View Surgeries</a></li>
+              <li><a href="{% url 'create_surgery_view' %}">Schedule Surgery</a></li>
+              <li><a href="{% url 'list_surgery_view' %}">View Surgeries</a></li>
             </ul>
           </li>
           <li class="dropdown"><a href="#"><span>Perscriptions</span> <i class="bi bi-chevron-down"></i></a>

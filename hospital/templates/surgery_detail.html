@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block header %}
+{{ header }}
+
+{% endblock %}
+
+
+
+{% block content %}
+<div class="container">
+    <h1>Surgery on {{ object.date }}</h1>
+
+    <div class="col-sm-6">
+        <table class="table">
+            <tr>
+                <td>Patient</td><td>{{ object.patient.last_name }}, {{ object.patient.first_name }}</td>
+            </tr>
+            <tr>
+                <td>Surgeon</td><td>{{ object.surgeon.last_name }}, {{ object.surgeon.first_name }}</td>
+            </tr>
+            <tr>
+                <td>Nurse</td><td>{{ object.nurse.last_name }}, {{ object.nurse.first_name }}</td>
+            </tr>
+            <tr>
+                <td>Code</td><td>{{ object.code }}</td>
+            </tr>
+            <tr>
+                <td>Body Part</td><td>{{ object.anatomical_location }}</td>
+            </tr>
+            <tr>
+                <td>Type</td><td>{{ object.type }}</td>
+            </tr>
+            <tr>
+                <td>Category</td><td>{{ object.category }}</td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+{% endblock %}

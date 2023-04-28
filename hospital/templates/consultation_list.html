@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block header %}
+{{ header }}
+{% endblock %}
+
+
+
+{% block content %}
+<div class="container">
+    <ul>
+        <!-- Iterate over object_list -->
+        {% for consultation in object_list %}
+            <!-- Display Objects -->
+            <li>
+                <h1>
+                    <a href="{% url "detail_consultation_view" consultation.id %}">
+                        {{ consultation.physician.last_name }}, {{ consultation.physician.first_name }}
+                        seeing {{ consultation.patient.last_name }}, {{ consultation.patient.first_name }}
+                        on {{ consultation.date }}
+                    </a>
+                </h1>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

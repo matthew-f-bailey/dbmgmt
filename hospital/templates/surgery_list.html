@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block header %}
+{{ header }}
+{% endblock %}
+
+
+
+{% block content %}
+<div class="container">
+    <ul>
+        <!-- Iterate over object_list -->
+        {% for surgery in object_list %}
+            <!-- Display Objects -->
+            <li>
+                <h1>
+                    <a href="{% url "detail_surgery_view" surgery.id %}">
+                        {{ surgery.surgeon.last_name }}, {{ surgery.surgeon.first_name }}
+                        operating on patient {{ surgery.patient.last_name }}, {{ surgery.patient.first_name }}
+                        on {{ surgery.date }}
+                    </a>
+                </h1>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
