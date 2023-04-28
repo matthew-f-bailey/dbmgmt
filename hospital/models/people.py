@@ -137,7 +137,7 @@ class Patient(Person, DirtyFieldsMixin):
     # Room data
     admission_date = models.DateField(null=True)
     # We only need bed, as bed has a room, room has a unit
-    bed = models.ForeignKey(
+    bed = models.OneToOneField(
         "Bed",
         on_delete=models.SET_NULL,
         blank=True,

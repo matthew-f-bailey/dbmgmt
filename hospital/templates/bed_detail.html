@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block header %}
+{{ header }}
+
+{% endblock %}
+
+
+
+{% block content %}
+<div class="container">
+    <h1>Bed {{ object.bed_code }}</h1>
+
+    <div>
+        {% comment %} PATIENT INFO {% endcomment %}
+        <table class="table">
+            <tr>
+                <td>Bed Unit</td><td>{{ object.room.unit.name }}</td>
+            </tr>
+            <tr>
+                <td>Room</td><td>{{ object.room.number }}</td>
+            </tr>
+            <tr>
+                <td>Bed Letter</td><td>{{ object.bed_letter }}</td>
+            </tr>
+            <tr>
+            {% if object.patient %}
+                <td>Patient</td><td>{{ object.patient }}</td>
+            {% else %}
+                <td>Patient</td><td>
+                    Bed Unoccupied
+                </td>
+            {% endif %}
+            </tr>
+
+        </table>
+    </div>
+
+</div>
+{% endblock %}
