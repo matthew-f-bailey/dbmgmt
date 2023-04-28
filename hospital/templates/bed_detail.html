@@ -10,31 +10,55 @@
 
 {% block content %}
 <div class="container">
-    <h1>Bed {{ object.bed_code }}</h1>
+    <h1>Bed {{ bed.bed_code }}</h1>
 
     <div>
         {% comment %} PATIENT INFO {% endcomment %}
         <table class="table">
             <tr>
-                <td>Bed Unit</td><td>{{ object.room.unit.name }}</td>
+                <td>Bed Unit</td><td>{{ bed.room.unit.name }}</td>
             </tr>
             <tr>
-                <td>Room</td><td>{{ object.room.number }}</td>
+                <td>Room</td><td>{{ bed.room.number }}</td>
             </tr>
             <tr>
-                <td>Bed Letter</td><td>{{ object.bed_letter }}</td>
+                <td>Bed Letter</td><td>{{ bed.bed_letter }}</td>
             </tr>
-            <tr>
-            {% if object.patient %}
-                <td>Patient</td><td>{{ object.patient }}</td>
-            {% else %}
-                <td>Patient</td><td>
-                    Bed Unoccupied
-                </td>
-            {% endif %}
-            </tr>
-
         </table>
+    </div>
+    <div>
+        <form method="POST" action="{% url "detail_bed_view" bed.id %}">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <input type="hidden" name="bed_id" value={{ bed.id }}>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="patient-select">Choose Patient</label>
+                        <select name="patient_id" class="form-control" id="patient-select">
+                            {% for patient in patients %}
+                            <option value={{ patient.emp_number }}>{{ patient.last_name }}, {{ patient.first_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="nurse-select">Choose Nurse</label>
+                        <select name="nurse_id" class="form-control" id="nurse-select">
+                            {% for nurse in nurses %}
+                            <option value={{ nurse.emp_number }}>{{ nurse.last_name }}, {{ nurse.first_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-outline-secondary" type="submit">Assign</button>
+            </div>
+
+        </form>
     </div>
 
 </div>

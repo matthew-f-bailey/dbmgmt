@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block header %}
+{{ header }}
+{% endblock %}
+
+
+
+{% block content %}
+<div class="container">
+    <ul>
+        <!-- Iterate over object_list -->
+        {% for unit in object_list %}
+            <!-- Display Objects -->
+            <h2>{{ unit.name }}</h2>
+
+            <table class="table">
+                <tr>
+                    <th>Room</th>
+                    <th>Patient</th>
+                    <th>Nurse</th>
+                    <th></th>
+                </tr>
+                {% for room in unit.room_set.all %}
+                    {% for bed in room.bed_set.all %}
+                    <tr>
+                        <td>{{ bed.bed_code }}</td>
+                        <td>
+                            {% if bed.patient %}
+                                {{ bed.patient }}
+                            {% else %}
+                                --
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if bed.patient.assigned_nurse %}
+                                {{ bed.patient.assigned_nurse }}
+                            {% else %}
+                                --
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url "detail_bed_view" bed.id %}" class="button">
+                                Change Patient/Nurse
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% endfor %}
+
+            </table>
+
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
