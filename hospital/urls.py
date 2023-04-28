@@ -4,6 +4,7 @@ from hospital.views import people_view
 from hospital.views import medication_view
 from hospital.views import consutation_view
 from hospital.views import surgery_view
+from hospital.views import perscription_view
 
 
 urlpatterns = [
@@ -25,4 +26,8 @@ urlpatterns = [
     path('create_surgery', surgery_view.SurgeryCreateView.as_view(template_name="create_form.html"), name='create_surgery_view'),
     path('view_surgery/<int:pk>/', surgery_view.SurgeryDetailView.as_view(template_name="surgery_detail.html"), name='detail_surgery_view'),
     path('list_surgery', surgery_view.SurgeryListView.as_view(template_name="surgery_list.html"), name='list_surgery_view'),
+    # Perscriptions
+    path('create_perscription', perscription_view.PerscriptionCreateView.as_view(template_name="create_form.html"), name='create_perscription_view'),
+    path('view_perscription/<int:pk>/', perscription_view.PerscriptionDetailView.as_view(template_name="perscription_detail.html"), name='detail_perscription_view'),
+    path('list_perscription', perscription_view.PerscriptionListView.as_view(template_name="perscription_list.html"), name='list_perscription_view'),
 ]

@@ -64,7 +64,7 @@ class Consultation(models.Model):
         )
 
 
-class Prescriptions(models.Model):
+class Perscriptions(models.Model):
     """ Ties which dr gave which patient some med """
     physician = models.ForeignKey(
         "Physician",

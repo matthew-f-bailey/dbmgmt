@@ -6,6 +6,7 @@ from django.views.generic.edit import CreateView
 from hospital.forms.surgery_form import SurgeryForm
 from hospital.models.actions import Surgery
 
+
 class SurgeryListView(ListView):
     """ Basic List View to show Surgery """
 

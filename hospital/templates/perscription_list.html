@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block header %}
+{{ header }}
+{% endblock %}
+
+
+
+{% block content %}
+<div class="container">
+    <ul>
+        <!-- Iterate over object_list -->
+        {% for perscription in object_list %}
+            <!-- Display Objects -->
+            <li>
+                <h1>
+                    <a href="{% url "detail_perscription_view" perscription.id %}">
+                        {{ perscription.patient.last_name }}, {{ perscription.patient.first_name }} taking {{ perscription.medication }}
+                    </a>
+                </h1>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
