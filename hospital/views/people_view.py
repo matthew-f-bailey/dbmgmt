@@ -1,3 +1,4 @@
+from typing import Any, Dict
 from django.urls import reverse
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -20,6 +21,15 @@ class PatientListView(ListView):
 
 class PatientDetailView(DetailView):
     model = Patient
+
+    def get_context_data(self, **kwargs):
+        """ To disply user-fiendly of choices and for additional fields"""
+        context = super().get_context_data(**kwargs)
+        context ['blood_type'] = self.object.get_blood_type_display()
+        context ['gender'] = self.object.get_gender_display()
+        context ['total_cholesterol'] = self.object.total_cholesterol
+        context ['heart_risk'] = self.object.heart_risk
+        return context
 
 
 class PatientCreateView(CreateView):

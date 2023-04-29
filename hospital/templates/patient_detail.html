@@ -9,13 +9,65 @@
 
 {% block content %}
 <div class="container">
-    <table>
-        {% for label, value in object.get_fields %}
+    <div class="col-sm-6">
+        <table class="table">
             <tr>
-                <td>{{ label }}</td>
-                <td>{{ value }}</td>
+                <td>First Name</td><td>{{ object.first_name }}</td>
             </tr>
-        {% endfor %}
-    </table>
+            <tr>
+                <td>Last Name</td><td>{{ object.last_name }}</td>
+            </tr>
+            <tr>
+                <td>DOB</td><td>{{ object.dob }}</td>
+            </tr>
+            <tr>
+                <td>Gender</td><td>{{ gender }}</td>
+            </tr>
+            <tr>
+                <td>Address</td><td>{{ object.address }}</td>
+            </tr>
+            <tr>
+                <td>Phone</td><td>{{ object.phone }}</td>
+            </tr>
+            <tr>
+                <td>SSN</td><td>{{ object.ssn }}</td>
+            </tr>
+            <tr>
+                <td>Blood Type</td><td>{{ blood_type }}</td>
+            </tr>
+            <tr>
+                <td>Blood Sugar</td><td>{{ object.blood_sugar }}</td>
+            </tr>
+            <tr>
+                <td>Cholesterol HDL</td><td>{{ object.cholesterol_hdl }}</td>
+            </tr>
+            <tr>
+                <td>Cholesterol LDL</td><td>{{ object.cholesterol_ldl}}</td>
+            </tr>
+            <tr>
+                <td>Cholesterol Tri</td><td>{{ object.cholesterol_tri }}</td>
+            </tr>
+            {% if total_cholesterol > 0 %}
+                <tr>
+                    <td>Total Cholesterol</td><td>{{ total_cholesterol }}</td>
+                </tr>
+                <tr>
+                    <td>Heart Disease Risk</td><td>{{ heart_risk }}</td>
+                </tr>
+            {% endif %}
+            {% if object.admission_date %}
+                <tr>
+                    <td>Admission Date</td><td>{{ object.admission_date }}</td>
+                </tr>
+                <tr>
+                    <td>Assigned Bed</td><td>{{ object.bed }}</td>
+                </tr>
+                <tr>
+                    <td>Assigned Nurse</td><td>{{ object.assigned_nurse }}</td>
+                </tr>
+            {% endif %}
+            
+        </table>
+    </div>
 </div>
 {% endblock %}
