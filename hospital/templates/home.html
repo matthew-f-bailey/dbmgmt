@@ -1,40 +1,261 @@
-{% extends "base.html" %}
+
 {% load static %}
 
-{% block header %}
-Welcome
-{% endblock %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block content %}
-<div class="container">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <div class = "row">
-        <div class="col">
-            <h1> Welcome to Newark Medical Associates Admin Portal</h1>
-        </div>
+  <title>Inner Page - Newark Medical Associates Bootstrap Template</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="{% static 'img/favicon.png' %}" rel="icon">
+  <link href="{% static 'img/apple-touch-icon.png' %}" rel="icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/animate.css/animate.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+  <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: Newark Medical Associates
+  * Updated: Mar 10 2023 with Bootstrap v5.2.3
+  * Template URL: https://bootstrapmade.com/Newark Medical Associates-free-bootstrap-theme/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+
+  <!-- ======= Top Bar ======= -->
+  <div id="topbar" class="d-flex align-items-center fixed-top">
+    <div class="container d-flex align-items-center justify-content-center justify-content-md-between">
+      <div class="align-items-center d-none d-md-flex">
+        <i class="bi bi-clock"></i> Monday - Saturday, 8AM to 10PM
+      </div>
+      <div class="d-flex align-items-center">
+        <i class="bi bi-phone"></i> Call us now +1 5589 55488 55
+      </div>
     </div>
-    <div class = "row">
-        <div class="col">
-            <h3>Serving {{ patients.count }} patients</h3>
-        </div>
+  </div>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top">
+    <div class="container d-flex align-items-center">
+
+      <a href="index.html" class="logo me-auto"><img src=href="{% static 'img/logo.png' %}" alt=""></a>
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <!-- <h1 class="logo me-auto"><a href="index.html">Newark Medical Associates</a></h1> -->
+
+      <nav id="navbar" class="navbar order-last order-lg-0">
+        <ul>
+          <li><a class="nav-link scrollto" href={% url 'hospital-home' %}>Home</a></li>
+          <li class="dropdown"><a href="#"><span>Staff</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a href="#">Manage Physicians</a></li>
+              <li><a href="#">Manage Surgeons</a></li>
+              <li><a href="#">Manage Nurses</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><a href="#"><span>Patients</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a href="{% url 'create_patient_view' %}">Add New Patient</a></li>
+              <li><a href="{% url 'list_patient_view' %}">View Patients</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><a href="#"><span>Consultations</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a href="{% url 'create_consultation_view' %}">Schedule Consultation</a></li>
+              <li><a href="{% url 'list_consultation_view' %}">View Consultations</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><a href="#"><span>Rooms/Beds</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a href="{% url 'list_bed_room_unit_view' %}">Assign/View Beds</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><a href="#"><span>Surgeries</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a href="{% url 'create_surgery_view' %}">Schedule Surgery</a></li>
+              <li><a href="{% url 'list_surgery_view' %}">View Surgeries</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><a href="#"><span>Perscriptions</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a href="{% url 'create_perscription_view' %}">Assign Perscription</a></li>
+              <li><a href="{% url 'list_perscription_view' %}">View Perscriptions</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><a href="#"><span>Medications</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a href="{% url 'view_medications' %}">View Medications</a></li>
+              <li><a href="{% url 'create_medication_view' %}">Add Medication</a></li>
+              <li><a href="{% url 'create_medication_interaction' %}">Add Medication Interaction</a></li>
+            </ul>
+          </li>
+
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
     </div>
-    <div class = "row">
-        <div class="col">
-            <h3>With a network of {{ physicians.count }} Physicians</h3>
-        </div>
-    </div>
-    <div class = "row">
-        <div class="col">
-            <h3>Over {{ surgeons.count }} Surgeons</h3>
-        </div>
-    </div>
-    <div class = "row">
-        <div class="col">
-            <h3>And {{ nurses.count }} Nurses</h3>
-        </div>
-    </div>
-</div>
+  </header><!-- End Header -->
+
+  <main id="main">
+
+    <div class="container-fluid">
+
+        <!-- ======= Hero Section ======= -->
+     <section id="hero">
+       <div id="heroCarousel" data-bs-interval="5000" class="carousel slide carousel-fade" data-bs-ride="carousel">
+
+         <ol class="carousel-indicators" id="hero-carousel-indicators"></ol>
+
+         <div class="carousel-inner" role="listbox">
+
+           <!-- Slide 1 -->
+           <div class="carousel-item active" style="background-image: url(static/img/slide/slide-1.jpg)">
+             <div class="container">
+               <h2>Welcome to Newark Medical Associates Admin Portal</span></h2>
+           </div>
+           </div>
+
+           <!-- Slide 2 -->
+           <div class="carousel-item" style="background-image: url(static/img/slide/slide-2.jpg)">
+             <div class="container">
+               <h2>Serving {{ patients.count }} patients</h2>
+           </div>
+           </div>
+
+           <!-- Slide 3 -->
+           <div class="carousel-item" style="background-image: url(static/img/slide/slide-3.jpg)">
+             <div class="container">
+               <h2>With a network of {{ physicians.count }} Physicians</h2>
+               </div>
+           </div>
 
 
+         </div>
 
-{% endblock %}
+         <a class="carousel-control-prev" href="#heroCarousel" role="button" data-bs-slide="prev">
+           <span class="carousel-control-prev-icon bi bi-chevron-left" aria-hidden="true"></span>
+         </a>
+
+         <a class="carousel-control-next" href="#heroCarousel" role="button" data-bs-slide="next">
+           <span class="carousel-control-next-icon bi bi-chevron-right" aria-hidden="true"></span>
+         </a>
+
+       </div>
+     </section><!-- End Hero -->
+
+   </div>
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-3 col-md-6">
+            <div class="footer-info">
+              <h3>Newark Medical Associates</h3>
+              <p>
+                A108 Adam Street <br>
+                NJ 535022, USA<br><br>
+                <strong>Phone:</strong> +1 5589 55488 55<br>
+                <strong>Email:</strong> info@example.com<br>
+              </p>
+              <div class="social-links mt-3">
+                <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
+                <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
+                <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
+                <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
+                <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-6 footer-links">
+            <h4>Useful Links</h4>
+            <ul>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">About us</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Services</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Terms of service</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 col-md-6 footer-links">
+            <h4>Our Services</h4>
+            <ul>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Web Design</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Web Development</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Product Management</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Marketing</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Graphic Design</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-newsletter">
+            <h4>Our Newsletter</h4>
+            <p>Tamen quem nulla quae legam multos aute sint culpa legam noster magna</p>
+            <form action="" method="post">
+              <input type="email" name="email"><input type="submit" value="Subscribe">
+            </form>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="copyright">
+        &copy; Copyright <strong><span>Newark Medical Associates</span></strong>. All Rights Reserved
+      </div>
+      <div class="credits">
+        <!-- All the links in the footer should remain intact. -->
+        <!-- You can delete the links only if you purchased the pro version. -->
+        <!-- Licensing information: https://bootstrapmade.com/license/ -->
+        <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/Newark Medical Associates-free-bootstrap-theme/ -->
+        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+      </div>
+    </div>
+  </footer><!-- End Footer -->
+
+  <div id="preloader"></div>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+
+  <script src="{% static 'vendor/purecounter/purecounter_vanilla.js' %}"></script>
+  <script src="{% static 'vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/php-email-form/validate.js' %}"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+
+</body>
+
+</html>
+
+
