@@ -9,18 +9,23 @@
 
 {% block content %}
 <div class="container">
-    <ul>
+
         <!-- Iterate over object_list -->
-        {% for perscription in object_list %}
-            <!-- Display Objects -->
-            <li>
-                <h1>
-                    <a href="{% url "detail_perscription_view" perscription.id %}">
-                        {{ perscription.patient.last_name }}, {{ perscription.patient.first_name }} taking {{ perscription.medication }}
-                    </a>
-                </h1>
-            </li>
-        {% endfor %}
-    </ul>
+        <table class="table">
+            <tr>
+                <th>Medication</th>
+                <th>Patient</th>
+                <th>Perscribing Physician</th>
+                <th>View Perscription</th>
+            </tr>
+            {% for perscription in object_list %}
+            <tr>
+                <td>{{ perscription.medication.name }}</td>
+                <td>{{ perscription.patient.last_name }}, {{ perscription.patient.last_name }}</td>
+                <td>{{ perscription.physician.last_name }}, {{ perscription.physician.last_name }}</td>
+                <td><a href="{% url "detail_perscription_view" perscription.id %}">View</a></td>
+            </tr>
+            {% endfor %}
+        </table>
 </div>
 {% endblock %}

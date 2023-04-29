@@ -72,13 +72,13 @@
           <li class="dropdown"><a href="#"><span>Patients</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href="{% url 'create_patient_view' %}">Add New Patient</a></li>
-              <li><a href="{% url 'list_patient_view' %}">Search Patients</a></li>
+              <li><a href="{% url 'list_patient_view' %}">View Patients</a></li>
             </ul>
           </li>
           <li class="dropdown"><a href="#"><span>Consultations</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href="{% url 'create_consultation_view' %}">Schedule Consultation</a></li>
-              <li><a href="{% url 'list_consultation_view' %}">Search Consultations</a></li>
+              <li><a href="{% url 'list_consultation_view' %}">View Consultations</a></li>
             </ul>
           </li>
           <li class="dropdown"><a href="#"><span>Rooms/Beds</span> <i class="bi bi-chevron-down"></i></a>
@@ -100,9 +100,9 @@
           </li>
           <li class="dropdown"><a href="#"><span>Medications</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
-              <li><a href="{% url 'create_medication_view' %}">Add New Medication</a></li>
               <li><a href="{% url 'view_medications' %}">View Medications</a></li>
-              <li><a href="{% url 'create_medication_interaction' %}">Medication Interaction</a></li>
+              <li><a href="{% url 'create_medication_view' %}">Add Medication</a></li>
+              <li><a href="{% url 'create_medication_interaction' %}">Add Medication Interaction</a></li>
             </ul>
           </li>
 

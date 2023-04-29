@@ -2,21 +2,35 @@
 {% load static %}
 
 {% block header %}
-{{ header }}
+<h1>View Patients</h1>
 {% endblock %}
 
 
 
 {% block content %}
 <div class="container">
-    <ul>
+
         <!-- Iterate over object_list -->
-        {% for patient in object_list %}
-            <!-- Display Objects -->
-            <li>
-                <h1><a href="{% url "detail_patient_view" patient.emp_number %}">{{ patient.last_name }}, {{ patient.first_name }}</a></h1>
-            </li>
-        {% endfor %}
-    </ul>
+        <table class="table">
+            <tr>
+                <th>Name</th>
+                <th>Gender</th>
+                <th>PCP</th>
+                <th>Bed</th>
+                <th>Admitted</th>
+                <th>Assigned Nurse</th>
+            </tr>
+            {% for patient in object_list %}
+            <tr>
+                <td><a href="{% url "detail_patient_view" patient.emp_number %}">{{ patient.last_name }}, {{ patient.first_name }}</a></td>
+                <td>{{ patient.gender }}</td>
+                <td>{{ patient.pcp }}</td>
+                <td>{% if patient.bed %}{{ patient.bed }}{% else %}--{% endif %}</td>
+                <td>{% if patient.admission_date %}{{ patient.admission_date }}{% else %}--{% endif %}</td>
+                <td>{% if patient.assigned_nurse %}{{ patient.assigned_nurse }}{% else %}--{% endif %}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
 </div>
 {% endblock %}

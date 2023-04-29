@@ -2,27 +2,31 @@
 {% load static %}
 
 {% block header %}
-{{ header }}
+View Consultations
 {% endblock %}
 
 
 
 {% block content %}
 <div class="container">
-    <ul>
-        <!-- Iterate over object_list -->
+
+    <!-- Iterate over object_list -->
+    <table class="table">
+        <tr>
+            <th>Patient</th>
+            <th>Physician</th>
+            <th>Date</th>
+            <th>View Consultation</th>
+        </tr>
         {% for consultation in object_list %}
-            <!-- Display Objects -->
-            <li>
-                <h1>
-                    <a href="{% url "detail_consultation_view" consultation.id %}">
-                        {{ consultation.physician.last_name }}, {{ consultation.physician.first_name }}
-                        seeing {{ consultation.patient.last_name }}, {{ consultation.patient.first_name }}
-                        on {{ consultation.date }}
-                    </a>
-                </h1>
-            </li>
+        <tr>
+            <td><a href="{% url "detail_patient_view" consultation.patient.emp_number %}">{{ consultation.patient.last_name }}, {{ consultation.patient.first_name }}</a></td>
+            <td>{{ consultation.physician.last_name }}, {{ consultation.physician.first_name }}</td>
+            <td>{{ consultation.date }}</td>
+            <td><a href="{% url "detail_consultation_view" consultation.id %}">View</a></td>
+        </tr>
         {% endfor %}
-    </ul>
+    </table>
+
 </div>
 {% endblock %}

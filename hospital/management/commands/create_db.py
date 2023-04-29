@@ -1,5 +1,6 @@
 import os
 import shutil
+import random
 from datetime import datetime
 
 from django.core.management.base import BaseCommand
@@ -23,6 +24,10 @@ from hospital import constants
 from dbmgmt.settings import BASE_DIR
 
 fake = Faker()
+
+TOTAL_ROOMS = 25
+TOTAL_PATIENTS = 100
+TOTAL_NURSES = 12
 
 class Command(BaseCommand):
     help = 'Deletes current and recreates the mock database'
@@ -67,8 +72,8 @@ class Command(BaseCommand):
             u = Unit(name=name, prefix=code)
             u.save()
 
-            # Give all units 10 rooms
-            for i in range(1, 10):
+            # Give all units 50 rooms
+            for i in range(1, TOTAL_ROOMS):
                 r = Room(number=i, unit=u)
                 r.save()
 
@@ -238,7 +243,7 @@ class Command(BaseCommand):
         patient.save()
         print(f"Created Patient of '{patient}'")
         return patient
-    
+
     def create_medication1(self):
         medication1 = Medication(
             name = "Tylenol",
@@ -246,27 +251,71 @@ class Command(BaseCommand):
             available_qnty = 35,
             cost = 4.5,
             usage = """ Acetaminophen is used to relieve mild to moderate pain from headaches,
-                             muscle aches, menstrual periods, colds and sore throats, toothaches, 
+                             muscle aches, menstrual periods, colds and sore throats, toothaches,
                              and to reduce fever."""
         )
         medication1.save()
         print(f"Created Medication of '{medication1}'")
         return medication1
-    
+
     def create_medication2(self):
         medication2 = Medication(
             name = "Advil",
             code = 1002,
             available_qnty = 46,
             cost = 6.25,
-            usage = """ Ibuprofen is used to relieve pain from various conditions such as headache, 
-            dental pain, menstrual cramps, muscle aches, or arthritis. It is also used to reduce fever 
+            usage = """ Ibuprofen is used to relieve pain from various conditions such as headache,
+            dental pain, menstrual cramps, muscle aches, or arthritis. It is also used to reduce fever
             and to relieve minor aches and pain due to the common cold or flu."""
         )
         medication2.save()
         print(f"Created Medication of '{medication2}'")
         return medication2
 
+    def create_many_nurses(self):
+        """ Each nurse needs at least 5 patients """
+        for i in range(TOTAL_NURSES):
+            first = fake.first_name()
+            n = Nurse(
+                first_name=first,
+                last_name=fake.last_name(),
+                dob=fake.date(),
+                gender="M" if 'e' in first else "F",
+                address=fake.address(),
+                phone=fake.phone_number(),
+                ssn=fake.ssn(),
+                grade=constants.NURSE_GRADES[random.randint(0, len(constants.NURSE_GRADES))-1][0],
+                years_of_experience=random.randint(1,15),
+                salary=random.randint(60_000, 180_000)
+            )
+            n.save()
+
+    def create_many_patients(self):
+        """ Create a bunch of patients """
+        for i in range(TOTAL_PATIENTS):
+            first = fake.first_name()
+            p = Patient(
+                first_name=first,
+                last_name=fake.last_name(),
+                dob=fake.date(),
+                gender="M" if 'a' in first else "F",
+                address=fake.address(),
+                phone=fake.phone_number(),
+                ssn=fake.ssn(),
+                blood_type="an",
+                blood_sugar=1.0,
+                cholesterol_hdl=2.0,
+                cholesterol_ldl=3.0,
+                cholesterol_tri=4.0,
+            )
+            p.save()
+            # Randomly admit some
+            if random.randint(0, 1):
+                p.bed = Bed.objects.filter(patient__isnull=True).order_by("?").first()
+                p.assigned_nurse = Nurse.objects.order_by("?").first()
+                p.save()
+
+        print("Created 75 mock patients")
 
     def handle(self, *args, **options):
         """ Call the command """
@@ -300,6 +349,9 @@ class Command(BaseCommand):
         general_patient = self.create_general_patient()
         assert general_patient.pcp == chief
 
+        self.create_many_nurses()
+        self.create_many_patients()
+
         # Create medication1 and medication2
         medication1 = self.create_medication1()
         medication2 = self.create_medication2()
@@ -325,19 +377,20 @@ class Command(BaseCommand):
         )
         print(opt_visit)
 
-        # Give patient a bed and room, make sure admitted works
-        bed_names = {
-            "gcu-1A": type(None), # Patient w/ no bed, before update this is null
-            "gcu-2A": datetime, # Moving patient to new bed, has admitted time
-            None: datetime, # Admitted time there from last, removing bed relation
-        }
-        for bed_name, admitted_type in bed_names.items():
-            assert isinstance(general_patient.admission_date, admitted_type)
-            bed = Bed.objects.get_bed_by_code(bed_name)
-            general_patient.bed = bed
-            general_patient.save()
+        # # Give patient a bed and room, make sure admitted works
+        # bed_names = {
+        #     "gcu-1A": type(None), # Patient w/ no bed, before update this is null
+        #     "gcu-2A": datetime, # Moving patient to new bed, has admitted time
+        #     None: datetime, # Admitted time there from last, removing bed relation
+        # }
+        # for bed_name, admitted_type in bed_names.items():
+        #     assert isinstance(general_patient.admission_date, admitted_type)
+        #     bed = Bed.objects.get_bed_by_code(bed_name)
+        #     general_patient.bed = bed
+        #     general_patient.save()
 
         # Patient comes out in gcu-1A bed
-        general_patient.bed = Bed.objects.get_bed_by_code("gcu-1A")
+        # general_patient.bed = Bed.objects.get_bed_by_code("gcu-1A")
         general_patient.save()
-        print("HERE")
+
+        call_command("runserver")

@@ -9,20 +9,28 @@
 
 {% block content %}
 <div class="container">
-    <ul>
-        <!-- Iterate over object_list -->
+
+    <!-- Iterate over object_list -->
+    <table class="table">
+        <tr>
+            <th>Date</th>
+            <th>Patient</th>
+            <th>Surgeon</th>
+            <th>Nurse</th>
+            <th>Anatomical Location</th>
+            <th>View Surgery</th>
+        </tr>
         {% for surgery in object_list %}
-            <!-- Display Objects -->
-            <li>
-                <h1>
-                    <a href="{% url "detail_surgery_view" surgery.id %}">
-                        {{ surgery.surgeon.last_name }}, {{ surgery.surgeon.first_name }}
-                        operating on patient {{ surgery.patient.last_name }}, {{ surgery.patient.first_name }}
-                        on {{ surgery.date }}
-                    </a>
-                </h1>
-            </li>
+        <tr>
+            <td>{{ surgery.date }}</td>
+            <td>{{ surgery.patient.last_name }}, {{ surgery.patient.last_name }}</td>
+            <td>{{ surgery.surgeon.last_name }}, {{ surgery.surgeon.last_name }}</td>
+            <td>{{ surgery.nurse.last_name }}, {{ surgery.nurse.last_name }}</td>
+            <td>{{ surgery.anatomical_location }}</td>
+            <td><a href="{% url "detail_surgery_view" surgery.id %}">View</a></td>
+        </tr>
         {% endfor %}
-    </ul>
+    </table>
+
 </div>
 {% endblock %}
