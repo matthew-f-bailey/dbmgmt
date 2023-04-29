@@ -167,11 +167,11 @@ class Patient(Person, DirtyFieldsMixin):
 
         chole_ratio = self.total_cholesterol/self.cholesterol_hdl
         if chole_ratio < 4 :
-            return "n"
+            return "No Risk"
         elif chole_ratio >=4 and chole_ratio < 5:
-            return "l"
+            return "Low Risk"
         elif chole_ratio >=5:
-            return "m"
+            return "Moderate Risk"
 
 
 @receiver(pre_save, sender=Patient)
