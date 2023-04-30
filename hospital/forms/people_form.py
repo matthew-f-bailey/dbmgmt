@@ -20,3 +20,15 @@ class PatientForm(BootstrapForm):
             'cholesterol_ldl',
             'cholesterol_tri',
         ]
+
+class StaffToPatient(BootstrapForm):
+    class Meta:
+        model = Patient
+        fields = [
+            'allergies',
+            'blood_type',
+            'blood_sugar',
+            'cholesterol_hdl',
+            'cholesterol_ldl',
+            'cholesterol_tri',
+        ]

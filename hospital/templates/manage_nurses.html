@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block header %}
+    <div class="">
+        <h1>Manage Nurses</h1>
+    </div>
+{% endblock %}
+
+
+
+{% block content %}
+<div class="container">
+
+        <!-- Iterate over object_list -->
+        <table class="table">
+            <tr>
+                <th>Name</th>
+                <th class="text-center">Grade</th>
+                <th class="text-center">Experience(years)</th>
+                <th class="text-center">Assigned Patients</th>
+                <th class="text-center">Surgeries</th>
+                <th class="text-center">Medical Record</th>
+                
+            </tr>
+            {% for Nurse in object_list %}
+            <tr>
+                <td> {{ Nurse.last_name }}, {{ Nurse.first_name }}</a></td>
+                <td class="text-center"> {{ Nurse.grade }} </td>
+                <td class="text-center"> {{ Nurse.years_of_experience }} </td>
+                <td class="text-center"> {{ Nurse.patients }} </td>
+                <td class="text-center"> {{ Nurse.surgeries }} </td>
+                {% if Nurse.isPatient %}
+                <td class="text-center"><a href="{% url "detail_patient_view" Nurse.emp_number %}">View Record</a></td>
+                {% else %}
+                    <td class="text-center"> No Record, <a href="{% url "staff_to_patient" Nurse.emp_number %}"> Add </a></td>
+                {% endif %}
+            </div>
+            </tr>
+            {% endfor %}
+        </table>
+
+</div>
+{% endblock %}
