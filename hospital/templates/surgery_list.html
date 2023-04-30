@@ -23,9 +23,9 @@
         {% for surgery in object_list %}
         <tr>
             <td>{{ surgery.date }}</td>
-            <td>{{ surgery.patient.last_name }}, {{ surgery.patient.last_name }}</td>
-            <td>{{ surgery.surgeon.last_name }}, {{ surgery.surgeon.last_name }}</td>
-            <td>{{ surgery.nurse.last_name }}, {{ surgery.nurse.last_name }}</td>
+            <td>{{ surgery.patient.last_name }}, {{ surgery.patient.first_name }}</td>
+            <td>{{ surgery.surgeon.last_name }}, {{ surgery.surgeon.first_name }}</td>
+            <td>{{ surgery.nurse.last_name }}, {{ surgery.nurse.first_name }}</td>
             <td>{{ surgery.anatomical_location }}</td>
             <td><a href="{% url "detail_surgery_view" surgery.id %}">View</a></td>
         </tr>

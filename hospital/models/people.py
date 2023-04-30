@@ -49,7 +49,9 @@ class Person(models.Model, ShowAllDetailsMixin):
 
 class SkilledPerson(Person):
     """ A person who can have skills assigned to them """
-    ...
+    @property
+    def get_skills(self):
+        return [s.skill.name for s in self.assignedskills_set.all()]
 
 class Salaried(models.Model):
     """ Salaried Emps """
@@ -78,6 +80,11 @@ class Surgeon(SkilledPerson, Contract):
         skills = {s.skill.name for s in self.assignedskills_set.all()}
         needed = {s.name for s in type.requirements.all()}
         return needed.issubset(skills)
+
+    def missing_skills(self, type):
+        skills = {s.skill.name for s in self.assignedskills_set.all()}
+        needed = {s.name for s in type.requirements.all()}
+        return skills - needed
 
 class Nurse(SkilledPerson, Salaried):
     """

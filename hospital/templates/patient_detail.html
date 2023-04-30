@@ -8,7 +8,7 @@
 
 
 {% block content %}
-<div class="container">
+<div class="container row">
     <div class="col-sm-6">
         <table class="table">
             <tr>
@@ -66,8 +66,22 @@
                     <td>Assigned Nurse</td><td>{{ object.assigned_nurse }}</td>
                 </tr>
             {% endif %}
-            
+
         </table>
+    </div>
+    <div class="col-sm-6">
+        <h4>Allergies</h4>
+        <ul>
+            {% for allergy in object.allergies.all %}
+            <li>{{ allergy.name }}</li>
+            {% endfor %}
+        </ul>
+        <h4>Illnesses</h4>
+        <ul>
+            {% for illness in object.illnesses.all %}
+            <li>{{ illness.name }}</li>
+            {% endfor %}
+        </ul>
     </div>
 </div>
 {% endblock %}

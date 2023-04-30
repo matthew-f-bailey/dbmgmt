@@ -6,8 +6,12 @@ from datetime import datetime
 from django.core.management.base import BaseCommand
 from django.core.management import call_command
 from faker import Faker
+from faker_biology.physiology import Organ
+from faker_biology.taxonomy import ModelOrganism
+from faker_biology.mol_biol import Enzyme
+from faker_biology.bioseq import Bioseq
 
-from hospital.models.actions import Consultation
+from hospital.models.actions import Consultation, Perscriptions, Surgery
 from hospital.models.places import Unit, Bed, Room
 from hospital.models.people import (
     Nurse,
@@ -16,17 +20,23 @@ from hospital.models.people import (
     Surgeon,
     get_chief_of_staff,
 )
-from hospital.models.illnesses import Medication
-
+from hospital.models.illnesses import Medication, Illness, Allergy
 from hospital.models.skill_types import Skills, AssignedSkills, SurgeryType
 from hospital import constants
 
 from dbmgmt.settings import BASE_DIR
 
 fake = Faker()
+# Add some extra faker for illnesses and medicine
+fake.add_provider(Organ) # Allows fake.organ()
+fake.add_provider(ModelOrganism) # fake.organism_latin()  sounds like illness enough
+fake.add_provider(Enzyme) # fake.organism_latin()  sounds like medicine enough
+fake.add_provider(Bioseq) # fake.organism_latin()  sounds like medicine enough
 
 TOTAL_ROOMS = 25
 TOTAL_PATIENTS = 100
+TOTAL_PHYSICIANS = 15
+TOTAL_SURGEONS = 15
 TOTAL_NURSES = 12
 
 class Command(BaseCommand):
@@ -121,8 +131,8 @@ class Command(BaseCommand):
         """ Creates a plastic and makes sure he can perform """
         # Create surgeon
         plastic_surgeon = Surgeon(
-            first_name="Ken",
-            last_name="Plasty",
+            first_name="P.",
+            last_name="Lastic",
             dob=datetime(1965, 3, 3),
             gender="M",
             address="10 Botox Ave",
@@ -269,6 +279,16 @@ class Command(BaseCommand):
             and to relieve minor aches and pain due to the common cold or flu."""
         )
         medication2.save()
+
+        for _ in range(15):
+            m = Medication(
+                name=fake.amino_acid().full_name,
+                code=random.randint(1000, 2000),
+                available_qnty=random.randint(1,100),
+                cost=float(random.randint(0,10)),
+                usage=fake.paragraph(nb_sentences=5)
+            )
+            m.save()
         print(f"Created Medication of '{medication2}'")
         return medication2
 
@@ -315,7 +335,92 @@ class Command(BaseCommand):
                 p.assigned_nurse = Nurse.objects.order_by("?").first()
                 p.save()
 
+            # Randomly give some illnesses
+            if random.randint(0, 1):
+                name = fake.enzyme()
+                illness = Illness(
+                    name=name,
+                    illness_code="".join([word[0] for word in name.split(" ")]),
+                    description=fake.paragraph(nb_sentences=5)
+                )
+                illness.save()
+                p.illnesses.add(illness)
+                p.save()
+
+            # Randomly give some allergies
+            if random.randint(0, 1):
+                name = fake.enzyme()
+                allergy = Allergy(
+                    name=name,
+                    allergy_code="".join([word[0] for word in name.split(" ")]),
+                    description=fake.paragraph(nb_sentences=5)
+                )
+                allergy.save()
+                p.allergies.add(allergy)
+
+                p.save()
+                per = Perscriptions(
+                    physician=Physician.objects.order_by("?").first(),
+                    patient=p,
+                    medication=Medication.objects.order_by("?").first(),
+                    frequency=f"Take {random.randint(1,3)} daily",
+                    dosage=f"{random.randint(100, 500)} mg"
+                )
+                per.save()
+
+            if random.randint(0, 1):
+                stype = SurgeryType.objects.order_by("?").first()
+                eligable_nurses = [n for n in Nurse.objects.all() if n.can_perform(stype)]
+                eligable_surgeons = [s for s in Surgeon.objects.all() if s.can_perform(stype)]
+                if eligable_nurses and eligable_surgeons:
+                    sur = Surgery(
+                        date=fake.date(),
+                        surgeon=eligable_surgeons[0],
+                        nurse=eligable_nurses[0],
+                        patient=p,
+                        code="neu",
+                        anatomical_location="Head",
+                        category="h",
+                        type=stype,
+                        special_needs="None"
+                    )
+                    sur.save()
+
         print("Created 75 mock patients")
+
+    def create_many_physicians(self):
+        for _ in range(TOTAL_PHYSICIANS):
+            first = fake.first_name()
+            p = Physician(
+                first_name=first,
+                last_name=fake.last_name(),
+                dob=fake.date(),
+                gender="M" if 'c' in first else "F",
+                address=fake.address(),
+                phone=fake.phone_number(),
+                ssn=fake.ssn(),
+                specialty=constants.SPECIALTIES[random.randint(0, len(constants.SPECIALTIES)-1)][0],
+                salary=random.randint(40_000, 180_000)
+            )
+            p.save()
+
+    def create_many_surgeons(self):
+        for _ in range(TOTAL_SURGEONS):
+            first = fake.first_name()
+            s = Surgeon(
+                first_name=first,
+                last_name=fake.last_name(),
+                dob=fake.date(),
+                gender="M" if 'c' in first else "F",
+                address=fake.address(),
+                phone=fake.phone_number(),
+                ssn=fake.ssn(),
+                specialty=constants.SPECIALTIES[random.randint(0, len(constants.SPECIALTIES)-1)][0],
+                contract_length=random.randint(1, 10),
+                contract_type="Type"+str(random.randint(1, 5))
+            )
+            s.save()
+
 
     def handle(self, *args, **options):
         """ Call the command """
@@ -349,12 +454,14 @@ class Command(BaseCommand):
         general_patient = self.create_general_patient()
         assert general_patient.pcp == chief
 
-        self.create_many_nurses()
-        self.create_many_patients()
-
         # Create medication1 and medication2
         medication1 = self.create_medication1()
         medication2 = self.create_medication2()
+
+        self.create_many_nurses()
+        self.create_many_surgeons()
+        self.create_many_physicians()
+        self.create_many_patients()
 
         # Assign patient from COF to general
         general_patient.pcp = general_physician
