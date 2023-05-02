@@ -26,13 +26,18 @@ class Medication(models.Model):
 class Interactions(models.Model):
     medication1 = models.ForeignKey(Medication, on_delete = models.CASCADE, related_name = "first_med")
     medication2 = models.ForeignKey(Medication, on_delete = models.CASCADE, related_name = "second_med")
-    severity = models.CharField(choices = MED_INTERACTION, max_length=1)
+    severity = models.CharField(choices=MED_INTERACTION, max_length=1)
     # to avoid duplicate records of interaction between the same medciations
     class Meta:
         unique_together = ('medication1','medication2')
 
+    def __str__(self) -> str:
+        return f"{self.medication1} x {self.medication2} ({self.severity})"
 
 class Allergy(models.Model):
     name = models.CharField(max_length=100)
     allergy_code = models.CharField(max_length=10)
     description = models.CharField(max_length=1_000)
+
+    def __str__(self):
+        return self.name

@@ -21,11 +21,11 @@
                 <th class="text-center">Assigned Patients</th>
                 <th class="text-center">Surgeries</th>
                 <th class="text-center">Medical Record</th>
-                
+
             </tr>
             {% for Nurse in object_list %}
             <tr>
-                <td> {{ Nurse.last_name }}, {{ Nurse.first_name }}</a></td>
+                <td><a href="{% url "detail_nurse_view" Nurse.emp_number %}">{{ Nurse.last_name }}, {{ Nurse.first_name }}</a></td>
                 <td class="text-center"> {{ Nurse.grade }} </td>
                 <td class="text-center"> {{ Nurse.years_of_experience }} </td>
                 <td class="text-center"> {{ Nurse.patients }} </td>

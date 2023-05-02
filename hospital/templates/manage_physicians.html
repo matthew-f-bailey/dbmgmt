@@ -20,11 +20,11 @@
                 <th class="text-center">Number of Patients</th>
                 <th class="text-center">Number of Prescriptions</th>
                 <th class="text-center">Medical Record</th>
-                
+
             </tr>
             {% for physician in object_list %}
             <tr>
-                <td> {{ physician.last_name }}, {{ physician.first_name }}</a></td>
+                <td><a href="{% url "detail_physician_view" physician.emp_number %}">{{ physician.last_name }}, {{ physician.first_name }}</a></td>
                 <td> {{ physician.specialty }} </td>
                 <td class="text-center"> {{ physician.patients }} </td>
                 <td class="text-center"> {{ physician.perscriptions }} </td>

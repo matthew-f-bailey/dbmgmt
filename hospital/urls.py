@@ -6,6 +6,7 @@ from hospital.views import consutation_view
 from hospital.views import surgery_view
 from hospital.views import perscription_view
 from hospital.views import bed_view
+from hospital.views import skill_view
 
 
 urlpatterns = [
@@ -38,7 +39,15 @@ urlpatterns = [
     path('manage_physicians', people_view.ManagePhysicians.as_view(template_name="manage_physicians.html"), name='manage_physicians_view'),
     path('manage_surgeons', people_view.ManageSurgeons.as_view(template_name="manage_surgeons.html"), name='manage_surgeons_view'),
     path('manage_nurses', people_view.ManageNurses.as_view(template_name="manage_nurses.html"), name='manage_nurses_view'),
-
+    # Staff Create
+    path('create_physician', people_view.PhysicianCreateView.as_view(template_name="create_form.html"), name='create_physician_view'),
+    path('create_surgeon', people_view.SurgeonCreateView.as_view(template_name="create_form.html"), name='create_surgeon_view'),
+    path('create_nurse', people_view.NurseCreateView.as_view(template_name="create_form.html"), name='create_nurse_view'),
+    path('view_physician/<pk>', people_view.PhysicianDetailView.as_view(template_name="physician_detail.html"), name='detail_physician_view'),
+    path('view_surgeon/<pk>', people_view.SurgeonDetailView.as_view(template_name="surgeon_detail.html"), name='detail_surgeon_view'),
+    path('view_nurse/<pk>', people_view.NurseDetailView.as_view(template_name="nurse_detail.html"), name='detail_nurse_view'),
+    # Create/assign skill
+    path('assign_skill/<pk>', skill_view.AssignedSkillCreateView.as_view(template_name="create_form.html"), name='add_skill_view'),
     # Add a staff member to patients
     path('add_staff/<pk>/', people_view.AddStaffToPatient.as_view(template_name="create_form.html"), name='staff_to_patient'),
 

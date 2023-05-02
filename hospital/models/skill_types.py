@@ -35,6 +35,10 @@ class AssignedSkills(models.Model):
     """ Links up what surgeons have what skills """
     # All skilled persons can have skills
     # nurses, surgeons need skills to perform surgeries
+
+    class Meta:
+        unique_together = ('person', 'skill')
+
     person = models.ForeignKey(
         "SkilledPerson",
         on_delete=models.CASCADE, # Delete skill link if person gone

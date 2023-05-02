@@ -64,9 +64,31 @@
           <li><a class="nav-link scrollto" href={% url 'hospital-home' %}>Home</a></li>
           <li class="dropdown"><a href="#"><span>Staff</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
-              <li><a href="{% url 'manage_physicians_view' %}">Manage Physicians</a></li>
-              <li><a href="{% url 'manage_surgeons_view' %}">Manage Surgeons</a></li>
-              <li><a href="{% url 'manage_nurses_view' %}">Manage Nurses</a></li>
+              <li>
+                <li class="dropdown"><a href="#"><span>Physicians</span> <i class="bi bi-chevron-right"></i></a>
+                  <ul>
+                    <li><a href="{% url 'manage_physicians_view' %}">View Physicians</a></li>
+                    <li><a href="{% url 'create_physician_view' %}">Add Physician</a></li>
+                  </ul>
+                </li>
+              </li>
+              <li>
+                <li class="dropdown"><a href="#"><span>Surgeons</span> <i class="bi bi-chevron-right"></i></a>
+                  <ul>
+                    <li><a href="{% url 'manage_surgeons_view' %}">View Surgeons</a></li>
+                    <li><a href="{% url 'create_surgeon_view' %}">Add Surgeon</a></li>
+                  </ul>
+                </li>
+              </li>
+              <li>
+                <li class="dropdown"><a href="#"><span>Nurses</span> <i class="bi bi-chevron-right"></i></a>
+                  <ul>
+                    <li><a href="{% url 'manage_nurses_view' %}">View Nurses</a></li>
+                    <li><a href="{% url 'create_nurse_view' %}">Add Nurse</a></li>
+                  </ul>
+                </li>
+              </li>
+
             </ul>
           </li>
           <li class="dropdown"><a href="#"><span>Patients</span> <i class="bi bi-chevron-down"></i></a>

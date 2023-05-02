@@ -20,11 +20,11 @@
                 <th class="text-center">Scheduled Surgeries</th>
                 <th class="text-center">Contract Type</th>
                 <th class="text-center">Medical Record</th>
-                
+
             </tr>
             {% for surgeon in object_list %}
             <tr>
-                <td> {{ surgeon.last_name }}, {{ surgeon.first_name }}</a></td>
+                <td><a href="{% url "detail_surgeon_view" surgeon.emp_number %}">{{ surgeon.last_name }}, {{ surgeon.first_name }}</a></td>
                 <td> {{ surgeon.specialty }} </td>
                 <td class="text-center"> {{ surgeon.surgeries }} </td>
                 <td class="text-center"> {{ surgeon.contract_type }} </td>

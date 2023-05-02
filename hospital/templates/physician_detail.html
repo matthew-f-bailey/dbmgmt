@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block header %}
+<h1>Physician: {{ object.first_name }} {{ object.last_name }}</h1>
+{% endblock %}
+
+
+
+{% block content %}
+<div class="container row">
+    <div class="col-sm-6">
+        <table class="table">
+            <tr>
+                <td>First Name</td><td>{{ object.first_name }}</td>
+            </tr>
+            <tr>
+                <td>Last Name</td><td>{{ object.last_name }}</td>
+            </tr>
+            <tr>
+                <td>DOB</td><td>{{ object.dob }}</td>
+            </tr>
+            <tr>
+                <td>Gender</td><td>{{ gender }}</td>
+            </tr>
+            <tr>
+                <td>Address</td><td>{{ object.address }}</td>
+            </tr>
+            <tr>
+                <td>Phone</td><td>{{ object.phone }}</td>
+            </tr>
+            <tr>
+                <td>SSN</td><td>{{ object.ssn }}</td>
+            </tr>
+
+        </table>
+    </div>
+
+</div>
+{% endblock %}
