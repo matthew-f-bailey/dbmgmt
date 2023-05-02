@@ -14,13 +14,14 @@ from faker_biology.bioseq import Bioseq
 from hospital.models.actions import Consultation, Perscriptions, Surgery
 from hospital.models.places import Unit, Bed, Room
 from hospital.models.people import (
+    Person,
     Nurse,
     Patient,
     Physician,
     Surgeon,
     get_chief_of_staff,
 )
-from hospital.models.illnesses import Medication, Illness, Allergy
+from hospital.models.illnesses import Medication, Illness, Allergy, Interactions
 from hospital.models.skill_types import Skills, AssignedSkills, SurgeryType
 from hospital import constants
 
@@ -291,6 +292,18 @@ class Command(BaseCommand):
             m.save()
         print(f"Created Medication of '{medication2}'")
         return medication2
+    
+    def create_medication_interaction(self):
+        for _ in range(20):
+            med1 = Medication.objects.order_by('?').first()
+            med2 = Medication.objects.order_by('?').first()
+            if (med1.pk != med2.pk):
+                try:
+                    i = Interactions(medication1= med1, medication2 = med2, severity = 'm')
+                    i.save()
+                except:
+                    pass
+
 
     def create_many_nurses(self):
         """ Each nurse needs at least 5 patients """
@@ -421,6 +434,17 @@ class Command(BaseCommand):
             )
             s.save()
 
+    # def add_staff_to_patient(self):
+    #     for _ in range(5):
+    #         p = Physician.objects.order_by('?').first()
+    #         person = Person.get(pk = p.emp_number) #objects. filter( pk = p.emp_number ).
+    #         patient = Patient( person_ptr = person.emp_number, 
+    #                           blood_type= "op",
+    #                           blood_sugar = 4,
+    #                           cholesterol_hdl = 5,
+    #                           cholesterol_ldl = 6,
+    #                           cholesterol_tri = 7 )
+    #         patient.save_base( raw = True )
 
     def handle(self, *args, **options):
         """ Call the command """
@@ -458,10 +482,15 @@ class Command(BaseCommand):
         medication1 = self.create_medication1()
         medication2 = self.create_medication2()
 
+        # Create interactions
+        self.create_medication_interaction()
+
         self.create_many_nurses()
         self.create_many_surgeons()
         self.create_many_physicians()
         self.create_many_patients()
+        
+        # self.add_staff_to_patient()
 
         # Assign patient from COF to general
         general_patient.pcp = general_physician

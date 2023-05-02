@@ -34,4 +34,12 @@ urlpatterns = [
     # Beds/units
     path('list_bed_room_unit', bed_view.UnitListView.as_view(template_name="bed_room_unit_list.html"), name='list_bed_room_unit_view'),
     path('view_bed/<int:pk>', bed_view.assign_bed, name='detail_bed_view'),
+    # Staff
+    path('manage_physicians', people_view.ManagePhysicians.as_view(template_name="manage_physicians.html"), name='manage_physicians_view'),
+    path('manage_surgeons', people_view.ManageSurgeons.as_view(template_name="manage_surgeons.html"), name='manage_surgeons_view'),
+    path('manage_nurses', people_view.ManageNurses.as_view(template_name="manage_nurses.html"), name='manage_nurses_view'),
+
+    # Add a staff member to patients
+    path('add_staff/<pk>/', people_view.AddStaffToPatient.as_view(template_name="create_form.html"), name='staff_to_patient'),
+
 ]
